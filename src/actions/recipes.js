@@ -7,3 +7,15 @@ export const getRecipes = () => async(dispatch) => {
     })
     .catch(err => console.log(err.message))
 }
+
+export const postRecipe = (recipe, token) => async(dispatch) => {
+    api.createRecipe(recipe, {
+        headers: {
+            "x-auth-token": token
+        }
+    })
+    .then(({data}) => {
+        dispatch({type: "CREATE", payload: data})
+    })
+    .catch(err => console.log(err.message))
+}

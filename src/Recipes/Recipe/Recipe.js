@@ -5,8 +5,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { card, cardActions, details, media, overlay, overlay2, title } from "./styles";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
 const Recipe = ({recipe}) => {
+    const ratings = useSelector((state) => state.ratings)
+    const recipeRatings = ratings.filter(rating => rating.id === recipe.id)
+    const average = recipeRatings[0]? recipeRatings[0].average : 0
+    console.log(recipe.id, average)
+    
     return (
         <Card css={card}>
             {/* <CardMedia css={media} image title={recipe.name} /> */}
@@ -28,8 +34,8 @@ const Recipe = ({recipe}) => {
             </CardContent>
             <CardActions css={cardActions} >
                 <Button size="small" color="primary" onClick={()=>{}}>
-                    Rating
-                    {/* ratings.id */}
+                    &nbsp; Rating &nbsp;
+                    {average}
                 </Button>
                 <Button size="small" color="primary" onClick={()=>{}}>
                     <DeleteIcon fontSize="small" />

@@ -4,6 +4,7 @@ import {Container, AppBar, Typography, Grow, Grid} from '@mui/material'
 import {useDispatch} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
+import { getRatings } from "./actions/ratings";
 import recipes from "./images/recipes.png"
 import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
@@ -14,6 +15,7 @@ const App = () => {
 
     useEffect(()=>{
         dispatch(getRecipes())
+        dispatch(getRatings())
     },[dispatch])
 
     return (

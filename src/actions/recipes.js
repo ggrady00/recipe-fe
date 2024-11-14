@@ -3,7 +3,8 @@ import * as api from "../api"
 export const getRecipes = () => async(dispatch) => {
     api.fetchRecipes()
     .then(({data})=>{
-        dispatch({type:"FETCH_ALL", payload: data})
+        
+        dispatch({type:"FETCH_ALL", payload: data.recipes})
     })
     .catch(err => console.log(err.message))
 }

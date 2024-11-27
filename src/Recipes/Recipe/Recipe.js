@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React from "react";
-import { Card, CardActions, CardContent, CardMedia, Button, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Card, CardActions, CardContent, CardMedia, Button, Typography, Rating } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { card, cardActions, details, media, overlay, overlay2, title } from "./styles";
@@ -11,7 +11,9 @@ const Recipe = ({recipe}) => {
     const ratings = useSelector((state) => state.ratings)
     const recipeRatings = ratings.filter(rating => rating.id === recipe.id)
     const average = recipeRatings[0]? recipeRatings[0].average : 0
-    console.log(recipe.id, average)
+    const [rating, setRating] = useState(null)
+    // console.log(recipe.id, average)
+    // console.log(rating)
     
     return (
         <Card css={card}>
@@ -37,6 +39,10 @@ const Recipe = ({recipe}) => {
                     &nbsp; Rating &nbsp;
                     {average}
                 </Button>
+                <Rating name="rating" precision={0.5} onChange={(e)=>{
+                    setRating(e.target.value)
+                    }}>
+                </Rating>
                 <Button size="small" color="primary" onClick={()=>{}}>
                     <DeleteIcon fontSize="small" />
                     Delete

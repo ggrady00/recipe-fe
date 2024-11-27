@@ -8,6 +8,7 @@ import { getRatings } from "./actions/ratings";
 import recipes from "./images/recipes.png"
 import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
+import Register from "./Register/Register";
 import { appBar, heading, image, mainContainer } from "./styles";
 
 const App = () => {
@@ -31,7 +32,8 @@ const App = () => {
                         <Recipes />
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <Form />
+                        <Register />
+                        {/* <Form /> */}
                     </Grid>
                 </Grid>
             </Container>

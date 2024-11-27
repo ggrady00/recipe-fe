@@ -7,7 +7,7 @@ import { card, cardActions, details, media, overlay, overlay2, title } from "./s
 import moment from "moment";
 import { useSelector } from "react-redux";
 
-const Recipe = ({recipe}) => {
+const Recipe = ({recipe, setCurrentId}) => {
     const ratings = useSelector((state) => state.ratings)
     const recipeRatings = ratings.filter(rating => rating.id === recipe.id)
     const average = recipeRatings[0]? recipeRatings[0].average : 0
@@ -17,13 +17,13 @@ const Recipe = ({recipe}) => {
     
     return (
         <Card css={card}>
-            {/* <CardMedia css={media} image title={recipe.name} /> */}
+            <CardMedia css={media} image title={recipe.name} />
             <div css={overlay}>
                 <Typography variant="h6">{recipe.created_by}</Typography>
                 <Typography variant="body2">{moment(recipe.created_at).fromNow()}</Typography>
             </div>
             <div css={overlay2} >
-                <Button style={{color: 'white'}} size="small" onClick={()=>{}}>
+                <Button style={{color: 'white'}} size="small" onClick={()=>setCurrentId(recipe.id)}>
                     <MoreHorizIcon fontSize="default" />
                 </Button>
             </div>

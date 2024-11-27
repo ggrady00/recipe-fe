@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import React, {useEffect} from "react";
-import {Container, AppBar, Typography, Grow, Grid} from '@mui/material'
+import React, {useEffect, useState} from "react";
+import {Container, AppBar, Typography, Grow, Grid2} from '@mui/material'
 import {useDispatch} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
@@ -9,15 +9,18 @@ import recipes from "./images/recipes.png"
 import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
 import Register from "./Register/Register";
+import Login from "./Login/Login";
 import { appBar, heading, image, mainContainer } from "./styles";
 
 const App = () => {
+    const [currentId, setCurrentId] = useState(null)
     const dispatch = useDispatch()
 
     useEffect(()=>{
         dispatch(getRecipes())
         dispatch(getRatings())
-    },[dispatch])
+        console.log(currentId)
+    },[currentId, dispatch])
 
     return (
     <Container maxWidth="lg">
@@ -27,15 +30,16 @@ const App = () => {
         </AppBar>
         <Grow in>
             <Container>
-                <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
-                    <Grid item xs={12} sm={7}>
-                        <Recipes />
-                    </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <Register />
+                <Grid2 container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
+                    <Grid2 item xs={12} sm={7}>
+                        <Recipes setCurrentId={setCurrentId} currentId={currentId} />
+                    </Grid2>
+                    <Grid2 item xs={12} sm={4}>
+                        {/* <Login /> */}
+                        {/* <Register /> */}
                         {/* <Form /> */}
-                    </Grid>
-                </Grid>
+                    </Grid2>
+                </Grid2>
             </Container>
         </Grow>
     </Container>

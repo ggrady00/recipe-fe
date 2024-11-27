@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-const url = 'http://localhost:9090/api/recipes'
+const url = 'http://localhost:9090'
 
-export const fetchRecipes = () => axios.get(url)
-export const createRecipe = (newRecipe, token) => axios.post(url, newRecipe, token)
-export const fetchRatings = () => axios.get("http://localhost:9090/api/ratings")
-export const postRegister = (newUser) => axios.post("http://localhost:9090/api/auth/register", newUser)
+export const fetchRecipes = () => axios.get(`${url}/api/recipes`)
+export const createRecipe = (newRecipe, token) => axios.post(`${url}/api/recipes`, newRecipe, token)
+export const fetchRatings = () => axios.get(`${url}/api/ratings`)
+export const postRegister = (newUser) => axios.post(`${url}/api/auth/register`, newUser)
+export const postLogin = (userData) => axios.post(`${url}/api/auth/login`, userData) 

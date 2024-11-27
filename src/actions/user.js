@@ -8,3 +8,11 @@ export const postRegister = (newUser) => async (dispatch) => {
     .catch(err => console.log(err.message))
 }
 
+
+export const postLogin = (userData) => async (dispatch) => {
+    api.postLogin(userData)
+    .then(({data}) => {
+        dispatch({type: "POST_LOGIN", payload: data})
+    })
+    .catch(err => console.log(err.message))
+}

@@ -8,6 +8,13 @@ export const media = css`
   background-blend-mode: darken;
 `;
 
+export const fullscreenMedia = css`
+  height: 0;
+  padding-top: 25%;
+  background-color: rgba(0, 0, 0, 0.5);
+  background-blend-mode: darken;
+`;
+
 export const border = css`
   border: solid;
 `;

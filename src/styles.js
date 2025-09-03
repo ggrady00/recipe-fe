@@ -18,6 +18,25 @@ export const image = css`
   margin-left: 15px;
 `;
 
+export const button = css`
+  margin-left: 15px;
+  background-color: rgba(0,183,255, 1);
+  &:hover {
+    background-color: rgba(0,133,255, 1);
+  }
+`;
+
+export const toolbar = css`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const centerToolbar = css`
+  display: flex;
+  align-items: center;
+`;
+
 export const mainContainer = css`
 
   @media (max-width: 600px) {

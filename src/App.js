@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, {useEffect, useState} from "react";
-import {Container, AppBar, Typography, Grow, Grid2} from '@mui/material'
+import {Container, AppBar, Typography, Grow, Grid, Button, Toolbar} from '@mui/material'
 import {useDispatch} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
@@ -10,36 +10,45 @@ import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
 import Register from "./Register/Register";
 import Login from "./Login/Login";
-import { appBar, heading, image, mainContainer } from "./styles";
+import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar} from "./styles";
 
 const App = () => {
     const [currentId, setCurrentId] = useState(null)
     const dispatch = useDispatch()
+    const [currentForm, setCurrentForm] = useState('')
 
     useEffect(()=>{
         dispatch(getRecipes())
         dispatch(getRatings())
-        console.log(currentId)
-    },[currentId, dispatch])
+    },[dispatch])
 
     return (
     <Container maxWidth="lg">
         <AppBar css={appBar} position="static" color="inherit">
-            <Typography css={heading} variant="h2" align="center">Recipes</Typography>
-            <img css={image} src={recipes} alt="recipes" height="60" />
+            <Toolbar css={toolbar} >
+                <div></div>
+                <div css={centerToolbar}>
+                    <Typography css={heading} variant="h2" align="center">Recipes</Typography>
+                    <img css={image} src={recipes} alt="recipes" height="60" />
+                </div>
+                <div>
+                    <Button css={button} variant="contained" onClick={()=>setCurrentForm("register")}>Register</Button>
+                    <Button css={button} variant="contained" onClick={()=>setCurrentForm("login")}>Login</Button>
+                </div>
+            </Toolbar>
         </AppBar>
         <Grow in>
             <Container>
-                <Grid2 container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
-                    <Grid2 item xs={12} sm={7}>
+                <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
+                    <Grid item xs={12} sm={currentForm ? 8 : 12}>
                         <Recipes setCurrentId={setCurrentId} currentId={currentId} />
-                    </Grid2>
-                    <Grid2 item xs={12} sm={4}>
-                        {/* <Login /> */}
-                        {/* <Register /> */}
-                        {/* <Form /> */}
-                    </Grid2>
-                </Grid2>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        {currentForm === 'login' && <Login />}
+                        {currentForm === 'register' && <Register />}
+                        {currentForm === 'upload' && <Form />}
+                    </Grid>
+                </Grid>
             </Container>
         </Grow>
     </Container>

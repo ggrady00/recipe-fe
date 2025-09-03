@@ -16,3 +16,11 @@ export const postLogin = (userData) => async (dispatch) => {
     })
     .catch(err => console.log(err.message))
 }
+
+export const getProfile = () => async (dispatch) => {
+    api.fetchProfile()
+    .then(({data}) => {
+        dispatch({type: "FETCH_PROFILE", payload: data})
+    })
+    .catch(err => console.log(err.message))
+}

@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import React, {useEffect, useState} from "react";
 import {Container, AppBar, Typography, Grow, Grid, Button, Toolbar} from '@mui/material'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
 import { getRatings } from "./actions/ratings";
+import { getProfile } from "./actions/user";
 import recipes from "./images/recipes.png"
 import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
@@ -16,11 +17,21 @@ const App = () => {
     const [currentId, setCurrentId] = useState(null)
     const dispatch = useDispatch()
     const [currentForm, setCurrentForm] = useState('')
+    const user = useSelector((state) => state.user)
+    const [loggedIn, setLoggedIn] = useState(null)
 
     useEffect(()=>{
         dispatch(getRecipes())
         dispatch(getRatings())
+        dispatch(getProfile())
     },[dispatch])
+
+    useEffect(()=>{
+        if (Object.keys(user).length) {
+            setCurrentForm("upload")
+            setLoggedIn(true)
+        }
+    },[user])
 
     return (
     <Container maxWidth="lg">
@@ -32,8 +43,10 @@ const App = () => {
                     <img css={image} src={recipes} alt="recipes" height="60" />
                 </div>
                 <div>
-                    <Button css={button} variant="contained" onClick={()=>setCurrentForm("register")}>Register</Button>
-                    <Button css={button} variant="contained" onClick={()=>setCurrentForm("login")}>Login</Button>
+                    {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm("register")}>Register</Button>}
+                    {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm("login")}>Login</Button>}
+                    {loggedIn && <p>{user.user.username}</p>} 
+                    {/* add profile functionality */}
                 </div>
             </Toolbar>
         </AppBar>

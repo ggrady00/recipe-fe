@@ -4,6 +4,8 @@ const reducer = (user = {}, action) => {
             return action.payload
         case "POST_LOGIN":
             return action.payload
+        case "FETCH_PROFILE":
+            return action.payload
         default:
             return user
     }

@@ -5,7 +5,6 @@ import {useDispatch, useSelector} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
 import { getRatings } from "./actions/ratings";
-import { getProfile } from "./actions/user";
 import recipes from "./images/recipes.png"
 import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
@@ -24,13 +23,17 @@ const App = () => {
     useEffect(()=>{
         dispatch(getRecipes())
         dispatch(getRatings())
-        dispatch(getProfile())
     },[dispatch])
 
     useEffect(()=>{
         if (Object.keys(user).length) {
             setCurrentForm("upload")
             setLoggedIn(true)
+        }
+
+        if (!Object.keys(user).length) {
+            setCurrentForm("")
+            setLoggedIn(false)
         }
     },[user])
 

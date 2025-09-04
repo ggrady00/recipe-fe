@@ -6,6 +6,8 @@ const reducer = (user = {}, action) => {
             return action.payload
         case "FETCH_PROFILE":
             return action.payload
+        case "LOGOUT":
+            return {}
         default:
             return user
     }

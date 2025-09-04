@@ -11,6 +11,7 @@ import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
 import Register from "./Register/Register";
 import Login from "./Login/Login";
+import Profile from "./Profile/Profile";
 import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar} from "./styles";
 
 const App = () => {
@@ -45,7 +46,7 @@ const App = () => {
                 <div>
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm("register")}>Register</Button>}
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm("login")}>Login</Button>}
-                    {loggedIn && <p>{user.user.username}</p>} 
+                    {loggedIn && <Profile loggedInUser={user}/>} 
                     {/* add profile functionality */}
                 </div>
             </Toolbar>

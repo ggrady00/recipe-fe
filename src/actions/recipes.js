@@ -9,14 +9,14 @@ export const getRecipes = () => async(dispatch) => {
     .catch(err => console.log(err.message))
 }
 
-export const postRecipe = (recipe, token) => async(dispatch) => {
-    api.createRecipe(recipe, {
-        headers: {
-            "x-auth-token": token
-        }
+export const postRecipe = (recipe) => async(dispatch) => {
+    api.createRecipe(recipe)
+    .then(() => {
+        return api.fetchRecipes()
     })
-    .then(({data}) => {
-        dispatch({type: "CREATE", payload: data})
+    .then(({data})=>{
+        console.log(data)
+        dispatch({type:"FETCH_ALL", payload: data.recipes})
     })
     .catch(err => console.log(err.message))
 }

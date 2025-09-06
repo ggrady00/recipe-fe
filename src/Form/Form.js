@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux'
 import { postRecipe } from '../actions/recipes'
 
 const Form = () => {
-    const [postData, setPostData] = useState({name: '', description: '', instructions: '', ingredients: [], tags: ''})
+    const [postData, setPostData] = useState({name: '', description: '', instructions: '', ingredients: [], tags: []})
     const [ingredients, setIngredients] = useState('')
     const dispatch = useDispatch()
 
@@ -19,10 +19,11 @@ const Form = () => {
         setPostData({...postData, ingredients: [newIngredients]})
 
         dispatch(postRecipe(postData))
+        clear()
     }
 
     const clear = () => {
-
+        setPostData({name: '', description: '', instructions: '', ingredients: [], tags: []})
     }
 
     return (

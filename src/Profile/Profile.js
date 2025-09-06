@@ -4,7 +4,7 @@ import {button} from "./styles"
 import { useDispatch } from "react-redux";
 import { logout } from "../actions/user";
 
-const Profile = ({loggedInUser}) => {
+const Profile = ({loggedInUser,setFilterRecipesByUser}) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const dispatch = useDispatch()
 
@@ -19,6 +19,11 @@ const Profile = ({loggedInUser}) => {
     const handleLogout = () => {
         handleClose();
         dispatch(logout())
+    }
+
+    const handleMyRecipes = () => {
+        handleClose();
+        setFilterRecipesByUser(true)
     }
 
     return (
@@ -41,7 +46,7 @@ const Profile = ({loggedInUser}) => {
             onClose={handleClose}
             >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My Recipes</MenuItem>
+                <MenuItem onClick={handleMyRecipes}>My Recipes</MenuItem>
                 <MenuItem onClick={handleClose}>Settings</MenuItem>
                 <MenuItem onClick={handleLogout}>Log out</MenuItem>
             </Menu>

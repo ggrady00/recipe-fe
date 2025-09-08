@@ -8,6 +8,9 @@ import {
   Button,
   Typography,
   Rating,
+  IconButton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -19,36 +22,72 @@ import {
   overlay,
   overlay2,
   title,
-  fullscreenMedia
+  fullscreenMedia,
 } from "./styles";
 import moment from "moment";
-import { useSelector } from "react-redux";
-import FullscreenIcon from '@mui/icons-material/Fullscreen';
+import { useDispatch, useSelector } from "react-redux";
+import FullscreenIcon from "@mui/icons-material/Fullscreen";
+import { deleteRecipe } from "../../actions/recipes";
 
-const Recipe = ({ recipe, setCurrentId, currentId }) => {
+const Recipe = ({ recipe, setCurrentId, currentId, showDelete }) => {
   const ratings = useSelector((state) => state.ratings);
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
   const average = recipeRatings[0] ? recipeRatings[0].average : 0;
   const [rating, setRating] = useState(null);
+  const dispatch = useDispatch()
+
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleEditMenuClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    handleClose();
+    dispatch(deleteRecipe(recipe.id))
+    
+  }
 
   return (
     <Card css={card}>
-      <CardMedia css={currentId == recipe.id? fullscreenMedia: media} image title={recipe.name} />
+      <CardMedia
+        css={currentId == recipe.id ? fullscreenMedia : media}
+        image
+        title={recipe.name}
+      />
       <div css={overlay}>
         <Typography variant="h6">{recipe.created_by}</Typography>
         <Typography variant="body2">
           {moment(recipe.created_at).fromNow()}
         </Typography>
       </div>
-      <div css={overlay2}>
-        {currentId == null ?<Button
-          style={{ color: "white" }}
-          size="small"
-          onClick={() => setCurrentId(recipe.id)}
-        >
-          <FullscreenIcon></FullscreenIcon>
-        </Button>: null }
-      </div>
+
+      {showDelete && !currentId && (
+        <div css={overlay2}>
+          <IconButton
+            onClick={handleEditMenuClick}
+            aria-controls={Boolean(anchorEl) ? "edit-menu" : undefined}
+            aria-haspopup="true"
+            aria-expanded={Boolean(anchorEl) ? true : undefined}
+          >
+            <MoreHorizIcon size="small" sx={{ color: "white" }}></MoreHorizIcon>
+          </IconButton>
+          <Menu
+            id="edit-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Edit</MenuItem>
+            <MenuItem onClick={handleDelete}>Delete</MenuItem>
+          </Menu>
+        </div>
+      )}
+
       <div css={details}>
         <Typography variant="body2" color="textSecondary">
           {recipe.tags.map((tag) => `#${tag} `)}
@@ -83,11 +122,15 @@ const Recipe = ({ recipe, setCurrentId, currentId }) => {
             setRating(e.target.value);
           }}
         ></Rating>
-        <Button size="small" color="primary" onClick={() => {}}>
-          <DeleteIcon fontSize="small" />
-          Delete
-          {/* only if logged in as creator */}
-        </Button>
+        {currentId == null ? (
+          <Button
+            color="primary"
+            size="small"
+            onClick={() => setCurrentId(recipe.id)}
+          >
+            <FullscreenIcon></FullscreenIcon>
+          </Button>
+        ) : null}
       </CardActions>
     </Card>
   );

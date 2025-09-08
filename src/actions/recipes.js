@@ -20,3 +20,14 @@ export const postRecipe = (recipe) => async(dispatch) => {
     })
     .catch(err => console.log(err.message))
 }
+
+export const deleteRecipe = (recipeId) => async(dispatch) => {
+    api.deleteRecipe(recipeId)
+    .then(()=>{
+        return api.fetchRecipes()
+    })
+    .then(({data})=>{
+        dispatch({type:"DELETE", payload: data.recipes})
+    })
+    .catch(err => console.log(err.message))
+}

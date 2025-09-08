@@ -14,6 +14,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser}) => {
     if(!recipes.length) return <CircularProgress />
     
     const filteredRecipes = filterRecipesByUser ? recipes.filter(recipe => recipe.created_by == user.username) : recipes
+    const showDelete = filterRecipesByUser ? true : false
 
     if(currentId) {
         const recipe = recipes.filter(recipe => recipe.id == currentId)[0]
@@ -25,7 +26,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser}) => {
                     >
                         Close
                     </Button>
-                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId}/>
+                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete}/>
             </Dialog>
             
         )
@@ -35,7 +36,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser}) => {
             <Grid2 css={mainContainer} container alignItems="stretch" spacing={3} >
                 {filteredRecipes.map(recipe => (
                     <Grid2 key={recipe.id} xs={12} sm={6}>
-                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId}/>
+                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete}/>
                     </Grid2>
                 ))}
             </Grid2>

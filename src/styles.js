@@ -37,6 +37,11 @@ export const centerToolbar = css`
   align-items: center;
 `;
 
+export const rightToolbar = css`
+  display: flex;
+  align-items: center;
+`;
+
 export const mainContainer = css`
 
   @media (max-width: 600px) {

@@ -24,3 +24,8 @@ export const form = css`
   flexwrap: wrap;
   justifycontent: center;
 `;
+
+export const ingredientList = css`
+  display: flex;
+  alignItems: center;
+`;

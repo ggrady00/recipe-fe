@@ -5,13 +5,14 @@ import {useDispatch, useSelector} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
 import { getRatings } from "./actions/ratings";
+import {getIngredients} from "./actions/ingredients"
 import recipes from "./images/recipes.png"
 import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
 import Register from "./Register/Register";
 import Login from "./Login/Login";
 import Profile from "./Profile/Profile";
-import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar} from "./styles";
+import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar, rightToolbar} from "./styles";
 
 const App = () => {
     const [currentId, setCurrentId] = useState(null)
@@ -24,11 +25,12 @@ const App = () => {
     useEffect(()=>{
         dispatch(getRecipes())
         dispatch(getRatings())
+        dispatch(getIngredients())
     },[dispatch])
 
     useEffect(()=>{
         if (Object.keys(user).length) {
-            setCurrentForm("upload")
+            setCurrentForm("")
             setLoggedIn(true)
         }
 
@@ -49,9 +51,10 @@ const App = () => {
                     <Typography css={heading} variant="h2" align="center">Recipes</Typography>
                     <img css={image} src={recipes} alt="recipes" height="60" />
                 </div>
-                <div>
+                <div css={rightToolbar}>
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm("register")}>Register</Button>}
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm("login")}>Login</Button>}
+                    {loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "upload" ? "" : "upload"))}>Upload</Button>} 
                     {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser}/>} 
                     {/* add profile functionality */}
                 </div>
@@ -61,12 +64,12 @@ const App = () => {
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={currentForm ? 8 : 12}>
-                        <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser}/>
+                        {currentForm !== "upload" && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser}/>}
+                        {currentForm === 'upload' && <Form />}
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         {currentForm === 'login' && <Login />}
                         {currentForm === 'register' && <Register />}
-                        {currentForm === 'upload' && <Form />}
                     </Grid>
                 </Grid>
             </Container>

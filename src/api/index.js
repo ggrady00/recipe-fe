@@ -9,3 +9,4 @@ export const postRegister = (newUser) => axios.post(`${url}/api/auth/register`, 
 export const postLogin = (userData) => axios.post(`${url}/api/auth/login`, userData)
 export const fetchProfile = () => axios.get(`${url}/api/auth/profile`)
 export const deleteRecipe = (recipeId) => axios.delete(`${url}/api/recipes/${recipeId}`)
+export const fetchIngredients = () => axios.get(`${url}/api/ingredients`)

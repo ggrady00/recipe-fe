@@ -8,6 +8,7 @@ import { buttonSubmit, fileInput, form, ingredientList, paper, root } from './st
 import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { postRecipe } from '../actions/recipes'
+import { postIngredients } from '../actions/ingredients';
 
 const Form = () => {
     const [postData, setPostData] = useState({name: '', description: '', instructions: '', ingredients: [], tags: []})
@@ -15,11 +16,20 @@ const Form = () => {
     const dispatch = useDispatch()
     const allIngredients = useSelector((state) => state.ingredients)
     const [addingIng, setAddingIng] = useState(null)
+    const [uploadIng, setUploadIng] = useState(null)
+    const [newIng, setNewIng] = useState("")
     
     const handleSubmit = (e) => {
         e.preventDefault()
 
         const newPostData = {...postData}
+        ingredients.forEach(myIng => {
+            const found = allIngredients.find(allIng => myIng.name === allIng.name)
+            myIng.id = found.id
+        })
+
+        console.log(ingredients)
+
         newPostData.ingredients = ingredients
 
         dispatch(postRecipe(newPostData))
@@ -43,6 +53,14 @@ const Form = () => {
         setIngredients(updatedIngredients)
     }
 
+    const handleAddNewIng = () => {
+        if(!newIng.trim()) return
+        dispatch(postIngredients({"name": newIng.trim()}))
+        setIngredients([...ingredients, {"name": newIng.trim(), "quantity": ""}])
+        setUploadIng(false)
+        setNewIng("")
+    }
+
     const clear = () => {
         setIngredients([])
         setPostData({name: '', description: '', instructions: '', ingredients: [], tags: []})
@@ -62,16 +80,28 @@ const Form = () => {
                     <Button onClick={()=>setAddingIng(addingIng === true ? false : true)}>
                         {addingIng ? <RemoveIcon /> : <AddIcon /> }
                     </Button>
+                    
                 </div>
                 {addingIng === true && 
-                <Autocomplete 
+                <div>
+                    <Autocomplete
                 options={allIngredients || []}
                 getOptionLabel={(option) => option.name}
                 onChange={handleAddIngredient}
                 value={null}
                 renderInput={(params)=>(
-                    <TextField {...params} variant='outlined' label="Ingredients" fullWidth />)}
-                />}
+                    <TextField {...params} variant='outlined' label="Search Ingredients" fullWidth />)}
+                />
+                    <Button onClick={()=>setUploadIng(uploadIng==true ? false: true)}>
+                        {uploadIng ? "Cancel" : "Add Ingredient" }
+                    </Button>
+                </div>}
+                {uploadIng === true && 
+                <div css={form}>
+                    <TextField name="add ingredient" variant='outlined' label="Other ingredient" fullWidth value={newIng} onChange={(e)=>{setNewIng(e.target.value)}}/>
+                    <Button variant='contained' onClick={handleAddNewIng}>Submit</Button>
+                </div>
+                }
                 {ingredients.map((ing, index) => (
                     <div css={ingredientList} key={`Ingredient ${index}`}>
                     <Box >

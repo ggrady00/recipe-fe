@@ -9,15 +9,20 @@ import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { postRecipe } from '../actions/recipes'
 import { postIngredients } from '../actions/ingredients';
+import { postTags } from '../actions/tags';
 
 const Form = () => {
     const [postData, setPostData] = useState({name: '', description: '', instructions: '', ingredients: [], tags: []})
     const [ingredients, setIngredients] = useState([])
     const dispatch = useDispatch()
     const allIngredients = useSelector((state) => state.ingredients)
+    const allTags = useSelector((state) => state.tags)
     const [addingIng, setAddingIng] = useState(null)
+    const [uploadTag, setUploadTag] = useState(null)
     const [uploadIng, setUploadIng] = useState(null)
     const [newIng, setNewIng] = useState("")
+    const [myTags, setMyTags] = useState([])
+    const [newTag, setNewTag] = useState("")
     
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -27,10 +32,14 @@ const Form = () => {
             const found = allIngredients.find(allIng => myIng.name === allIng.name)
             myIng.id = found.id
         })
-
-        console.log(ingredients)
-
         newPostData.ingredients = ingredients
+
+        const tagIds = myTags.map(tag => {
+            const found = allTags.find(allTag => allTag.name === tag.name)
+            return found.id
+        })
+
+        newPostData.tags = tagIds
 
         dispatch(postRecipe(newPostData))
         clear()
@@ -61,8 +70,17 @@ const Form = () => {
         setNewIng("")
     }
 
+    const handleAddNewTag = () => {
+        if(!newTag.trim()) return
+        dispatch(postTags({"name" : newTag.trim()}))
+        setMyTags([...myTags, {"name": newTag.trim()}])
+        setNewTag("")
+        setUploadTag(false)
+    }
+
     const clear = () => {
         setIngredients([])
+        setMyTags([])
         setPostData({name: '', description: '', instructions: '', ingredients: [], tags: []})
     }
 
@@ -123,7 +141,26 @@ const Form = () => {
                 )}
 
 
-                <TextField name="tags" variant='outlined' label="Tags" fullWidth value={postData.tags} onChange={(e) => setPostData({...postData, tags: e.target.value})} />
+                <div css={form}>
+                <Autocomplete
+                fullWidth
+                multiple
+                options={allTags || []}
+                getOptionLabel={(option) => option.name}
+                onChange={(e, value) => setMyTags(value)}
+                value={myTags}
+                renderInput={(params) => (
+                    <TextField {...params} variant='outlined' label="Search Tags" fullWidth />
+                )}
+                />
+                <Button onClick={()=>setUploadTag( uploadTag== true ? false : true)}>{uploadTag ? "Cancel" : "New Tag"}</Button>
+                </div>
+                {uploadTag && 
+                <div css={form}>
+                    <TextField name="add tag" variant='outlined' label="Other tag" fullWidth value={newTag} onChange={(e)=>{setNewTag(e.target.value)}}/>
+                    <Button variant='contained' onClick={handleAddNewTag}>Submit</Button>
+                </div>}
+                {/* <TextField name="tags" variant='outlined' label="Tags" fullWidth value={postData.tags} onChange={(e) => setPostData({...postData, tags: e.target.value})} /> */}
                 <div css={fileInput}>
                     <FileBase type='file' multiple={false} onDone={({base64}) => setPostData({...postData, selectedFile: base64})} />
                 </div>

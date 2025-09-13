@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import { getRecipes } from "./actions/recipes"
 import { getRatings } from "./actions/ratings";
 import {getIngredients} from "./actions/ingredients"
+import {getTags} from "./actions/tags"
 import recipes from "./images/recipes.png"
 import Form from "./Form/Form";
 import Recipes from "./Recipes/Recipes"
@@ -26,6 +27,7 @@ const App = () => {
         dispatch(getRecipes())
         dispatch(getRatings())
         dispatch(getIngredients())
+        dispatch(getTags())
     },[dispatch])
 
     useEffect(()=>{

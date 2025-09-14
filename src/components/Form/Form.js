@@ -7,10 +7,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { buttonSubmit, fileInput, form, ingredientList, paper, root } from './styles'
 import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
-import { postRecipe } from '../actions/recipes'
-import { postIngredients } from '../actions/ingredients';
-import { postTags } from '../actions/tags';
-import { patchRecipe } from '../actions/recipes';
+import { postRecipe } from '../../actions/recipes'
+import { postIngredients } from '../../actions/ingredients';
+import { postTags } from '../../actions/tags';
+import { patchRecipe } from '../../actions/recipes';
 
 const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
     const [postData, setPostData] = useState({name: '', description: '', instructions: '', ingredients: [], tags: []})

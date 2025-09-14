@@ -8,11 +8,11 @@ import { getRatings } from "./actions/ratings";
 import {getIngredients} from "./actions/ingredients"
 import {getTags} from "./actions/tags"
 import recipes from "./images/recipes.png"
-import Form from "./Form/Form";
-import Recipes from "./Recipes/Recipes"
-import Register from "./Register/Register";
-import Login from "./Login/Login";
-import Profile from "./Profile/Profile";
+import Form from "./components/Form/Form";
+import Recipes from "./components/Recipes/Recipes"
+import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
+import Profile from "./components/Profile/Profile";
 import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar, rightToolbar} from "./styles";
 
 const App = () => {

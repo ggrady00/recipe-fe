@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import {Paper, Typography, TextField, Button} from '@mui/material'
 import { buttonSubmit, form, paper, root } from './styles'
 import { useDispatch, useSelector } from "react-redux";
-import {postRegister} from "../actions/user"
+import {postRegister} from "../../actions/user"
 
 const Register = () => {
     const user = useSelector((state) => state.user)

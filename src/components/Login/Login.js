@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import {Paper, Typography, TextField, Button} from '@mui/material'
 import { buttonSubmit, form, paper, root } from './styles'
 import { useDispatch, useSelector } from "react-redux";
-import { postLogin } from "../actions/user";
+import { postLogin } from "../../actions/user";
 
 
 const Login = () => {

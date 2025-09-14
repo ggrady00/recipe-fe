@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import {button} from "./styles"
 import { useDispatch } from "react-redux";
-import { logout } from "../actions/user";
+import { logout } from "../../actions/user";
 
 const Profile = ({loggedInUser,setFilterRecipesByUser}) => {
     const [anchorEl, setAnchorEl] = useState(null)

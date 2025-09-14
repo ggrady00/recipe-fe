@@ -27,8 +27,8 @@ import {
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import { deleteRecipe } from "../../actions/recipes";
-import placeholder from "../../images/food.jpg"
+import { deleteRecipe } from "../../../actions/recipes";
+import placeholder from "../../../images/food.jpg"
 
 const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm }) => {
   const ratings = useSelector((state) => state.ratings);

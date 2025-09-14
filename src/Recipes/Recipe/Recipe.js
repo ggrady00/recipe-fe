@@ -28,6 +28,7 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { deleteRecipe } from "../../actions/recipes";
+import placeholder from "../../images/food.jpg"
 
 const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm }) => {
   const ratings = useSelector((state) => state.ratings);
@@ -62,7 +63,7 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm })
     <Card css={card}>
       <CardMedia
         css={currentId == recipe.id ? fullscreenMedia : media}
-        image
+        image={placeholder}
         title={recipe.name}
       />
       <div css={overlay}>

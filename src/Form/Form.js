@@ -129,8 +129,8 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
             <form autoComplete='off' noValidate css={`${root} ${form}`} onSubmit={handleSubmit}>
                 <Typography variant='h4'>Upload a recipe</Typography>
                 <TextField name="name" variant='outlined' label="Name" fullWidth value={postData.name} onChange={(e) => setPostData({...postData, name: e.target.value})} />
-                <TextField name="description" variant='outlined' label="Description" fullWidth value={postData.description} onChange={(e) => setPostData({...postData, description: e.target.value})} />
-                <TextField name="instructions" variant='outlined' label="Instructions" fullWidth value={postData.instructions} onChange={(e) => setPostData({...postData, instructions: e.target.value})} />
+                <TextField name="description" variant='outlined' label="Description" fullWidth multiline minRows={2} maxRows={3} value={postData.description} onChange={(e) => setPostData({...postData, description: e.target.value})} />
+                <TextField name="instructions" variant='outlined' label="Instructions" fullWidth multiline minRows={6} maxRows={10} value={postData.instructions} onChange={(e) => setPostData({...postData, instructions: e.target.value})} />
                 
                 {/* <TextField name="ingredients" variant='outlined' label="Ingredients" fullWidth value={ingredients} onChange={(e) => {setIngredients(e.target.value)}} /> */}
                 <div style={{display: "flex", alignItems: "center"}}>
@@ -201,9 +201,9 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
                     <Button variant='contained' onClick={handleAddNewTag}>Submit</Button>
                 </div>}
                 {/* <TextField name="tags" variant='outlined' label="Tags" fullWidth value={postData.tags} onChange={(e) => setPostData({...postData, tags: e.target.value})} /> */}
-                <div css={fileInput}>
+                {/* <div css={fileInput}>
                     <FileBase type='file' multiple={false} onDone={({base64}) => setPostData({...postData, selectedFile: base64})} />
-                </div>
+                </div> */}
                 <Button css={buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>Submit</Button>
                 <Button variant='contained' color='secondary' size='small' onClick={clear} fullWidth>Clear</Button>
             </form>

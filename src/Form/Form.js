@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Autocomplete, Box, Button, IconButton, Paper, TextField, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -10,8 +10,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { postRecipe } from '../actions/recipes'
 import { postIngredients } from '../actions/ingredients';
 import { postTags } from '../actions/tags';
+import { patchRecipe } from '../actions/recipes';
 
-const Form = () => {
+const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
     const [postData, setPostData] = useState({name: '', description: '', instructions: '', ingredients: [], tags: []})
     const [ingredients, setIngredients] = useState([])
     const dispatch = useDispatch()
@@ -23,6 +24,36 @@ const Form = () => {
     const [newIng, setNewIng] = useState("")
     const [myTags, setMyTags] = useState([])
     const [newTag, setNewTag] = useState("")
+    const recipes = useSelector((state) => state.recipes)
+    const [patchId, setPatchId] = useState(null)
+    
+    useEffect(()=>{
+        if(currentId) {
+            const recipe = recipes.filter(recipe => recipe.id == currentId)[0]
+            if(recipe) {
+                const formatIngredients = recipe.ingredients.map(ing => {
+                    const newObj = {
+                        name: ing.ingredient,
+                        quantity: ing.quantity
+                    }
+                    return newObj
+                })
+                const formatTags = recipe.tags.map(tag => {
+                    return {"name": tag}
+                })
+                setPostData({
+                    name: recipe.name,
+                    description: recipe.description,
+                    instructions: recipe.instructions,
+                    ingredients: formatIngredients,
+                    tags: formatTags
+                })
+                setIngredients(formatIngredients)
+                setMyTags(formatTags)
+                setPatchId(recipe.id)
+            }
+        }
+    },[currentId, recipes])
     
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -41,8 +72,15 @@ const Form = () => {
 
         newPostData.tags = tagIds
 
-        dispatch(postRecipe(newPostData))
+        if(currentForm === "edit") {
+            dispatch(patchRecipe(patchId, newPostData))
+        }
+        else dispatch(postRecipe(newPostData))
+
         clear()
+        setCurrentForm("")
+        setCurrentId(null)
+        
     }
 
     const handleAddIngredient = (e, value) => {
@@ -83,6 +121,8 @@ const Form = () => {
         setMyTags([])
         setPostData({name: '', description: '', instructions: '', ingredients: [], tags: []})
     }
+
+    
 
     return (
         <Paper css={paper}>

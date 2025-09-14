@@ -7,7 +7,7 @@ import { mainContainer } from "./styles";
 import {Button} from "@mui/material";
 
 
-const Recipes = ({setCurrentId, currentId, filterRecipesByUser}) => {
+const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm}) => {
     const recipes = useSelector((state)=>state.recipes)
     const user = useSelector((state) => state.user)
 
@@ -36,7 +36,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser}) => {
             <Grid2 css={mainContainer} container alignItems="stretch" spacing={3} >
                 {filteredRecipes.map(recipe => (
                     <Grid2 key={recipe.id} xs={12} sm={6}>
-                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete}/>
+                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} setCurrentForm={setCurrentForm}/>
                     </Grid2>
                 ))}
             </Grid2>

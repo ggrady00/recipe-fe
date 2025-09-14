@@ -29,7 +29,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { deleteRecipe } from "../../actions/recipes";
 
-const Recipe = ({ recipe, setCurrentId, currentId, showDelete }) => {
+const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm }) => {
   const ratings = useSelector((state) => state.ratings);
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
   const average = recipeRatings[0] ? recipeRatings[0].average : 0;
@@ -50,6 +50,12 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete }) => {
     handleClose();
     dispatch(deleteRecipe(recipe.id))
     
+  }
+
+  const handleEdit = () => {
+    handleClose()
+    setCurrentForm("edit")
+    setCurrentId(recipe.id)
   }
 
   return (
@@ -82,7 +88,7 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete }) => {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Edit</MenuItem>
+            <MenuItem onClick={handleEdit}>Edit</MenuItem>
             <MenuItem onClick={handleDelete}>Delete</MenuItem>
           </Menu>
         </div>

@@ -42,12 +42,18 @@ const App = () => {
         }
     },[user])
 
+    const handleHome = () => {
+        setFilterRecipesByUser(false)
+        setCurrentForm("")
+        setCurrentId(null)
+    }
+
     return (
     <Container maxWidth="lg">
         <AppBar css={appBar} position="static" color="inherit">
             <Toolbar css={toolbar} >
                 <div>
-                    <Button css={button} variant="contained" onClick={()=>{setFilterRecipesByUser(false)}}>Home</Button>
+                    <Button css={button} variant="contained" onClick={()=>{handleHome()}}>Home</Button>
                 </div>
                 <div css={centerToolbar}>
                     <Typography css={heading} variant="h2" align="center">Recipes</Typography>
@@ -66,8 +72,8 @@ const App = () => {
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={currentForm ? 8 : 12}>
-                        {currentForm !== "upload" && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser}/>}
-                        {currentForm === 'upload' && <Form />}
+                        {(currentForm !== "upload" && currentForm !== "edit") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm}/>}
+                        {(currentForm === 'upload' || currentForm === "edit") && <Form currentForm={currentForm} currentId={currentId} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId}/>}
                     </Grid>
                     <Grid item xs={12} sm={4}>
                         {currentForm === 'login' && <Login />}

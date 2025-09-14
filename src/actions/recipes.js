@@ -31,3 +31,14 @@ export const deleteRecipe = (recipeId) => async(dispatch) => {
     })
     .catch(err => console.log(err.message))
 }
+
+export const patchRecipe = (recipeId, recipe) => async(dispatch) => {
+    api.patchRecipe(recipeId, recipe)
+    .then(()=>{
+        return api.fetchRecipes()
+    })
+    .then(({data})=>{
+        dispatch({type:"DELETE", payload: data.recipes})
+    })
+    .catch(err => console.log(err.message))
+}

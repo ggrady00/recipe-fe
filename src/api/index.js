@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url = 'http://localhost:9090'
+const url = 'https://recipe-api-kz9o.onrender.com'
 
 export const fetchRecipes = () => axios.get(`${url}/api/recipes`)
 export const createRecipe = (newRecipe, token) => axios.post(`${url}/api/recipes`, newRecipe, token)

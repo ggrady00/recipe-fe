@@ -18,6 +18,7 @@ const Profile = ({loggedInUser,setFilterRecipesByUser}) => {
 
     const handleLogout = () => {
         handleClose();
+        setFilterRecipesByUser(false)
         dispatch(logout())
     }
 

@@ -48,3 +48,22 @@ export const mainContainer = css`
     flex-direction: column-reverse;
   }
 `
+
+export const filterBar = css`
+  border-radius: 15px;
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem
+`;
+
+export const filterFields = css`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  
+  & > .filter-autocomplete {
+    flex: 1;
+  }
+`;

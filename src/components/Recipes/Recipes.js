@@ -7,17 +7,31 @@ import { mainContainer } from "./styles";
 import {Button} from "@mui/material";
 
 
-const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm}) => {
+const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags}) => {
     const recipes = useSelector((state)=>state.recipes)
     const user = useSelector((state) => state.user)
 
     if(!recipes.length) return <CircularProgress />
     
-    const filteredRecipes = filterRecipesByUser ? recipes.filter(recipe => recipe.created_by == user.username) : recipes
+    let filteredRecipes = filterRecipesByUser ? recipes.filter(recipe => recipe.created_by === user.username) : recipes
+    if(filterIngredients.length > 0) {
+        filteredRecipes = filteredRecipes.filter(recipe => {
+            return filterIngredients.every(ing => {
+               return recipe.ingredients.some(ri => ri.ingredient === ing.name)
+            })
+        })
+    }
+    if(filterTags.length > 0) {
+        filteredRecipes = filteredRecipes.filter(recipe => {
+            return filterTags.every(tag => {
+               return recipe.tags.some(rt => rt === tag.name)
+            })
+        })
+    }
     const showDelete = filterRecipesByUser ? true : false
 
     if(currentId) {
-        const recipe = recipes.filter(recipe => recipe.id == currentId)[0]
+        const recipe = recipes.filter(recipe => recipe.id === currentId)[0]
         return (
             <Dialog fullScreen open={!!currentId} onClose={()=>setCurrentId(null)}>
                 <Button

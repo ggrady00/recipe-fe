@@ -4,9 +4,12 @@ import axios from 'axios'
 export const postRegister = (newUser) => async (dispatch) => {
     api.postRegister(newUser)
     .then(({data}) => {
-        dispatch({type: "POST_REGISTER", payload: data})
+        dispatch({type: "POST_REGISTER", payload: data.user})
+        axios.defaults.headers.common["x-auth-token"] = data.token;
     })
-    .catch(err => console.log(err.message))
+    .catch((err) => {
+        dispatch({type: "REGISTER_FAILURE", payload: err.response.data.msg})
+    })
 }
 
 

@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { useRef, useState, useEffect } from "react";
-import {Paper, Typography, TextField, Button} from '@mui/material'
+import {Paper, Typography, TextField, Button, Alert} from '@mui/material'
 import { buttonSubmit, form, paper, root } from './styles'
 import { useDispatch, useSelector } from "react-redux";
 import {postRegister} from "../../actions/user"
 
 const Register = () => {
-    const user = useSelector((state) => state.user)
+    const {error} = useSelector((state) => state.user)
     const dispatch = useDispatch()
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -45,6 +45,7 @@ const Register = () => {
         <Paper css={paper}>
             <form key={formKey} css={`${root} ${form}`} autoComplete="off" noValidate onSubmit={handleSubmit}>
                 <Typography variant="h6">User Registration</Typography>
+                {error && <Alert severity="error">{error}</Alert>}
                 <TextField name="username" variant="outlined" label="Username" fullWidth value={username} onChange={(e) => setUsername(e.target.value)}></TextField>
                 <TextField name="email" variant="outlined" label="Email" fullWidth value={email} onChange={(e) => setEmail(e.target.value)}></TextField>
                 <TextField name="password" autoComplete="off" variant="outlined" label="Password" type="password" fullWidth value={pwd} onChange={(e) => setPwd(e.target.value)}></TextField>

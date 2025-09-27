@@ -8,6 +8,8 @@ const reducer = (user = {}, action) => {
             return action.payload
         case "LOGOUT":
             return {}
+        case "REGISTER_FAILURE":
+            return {...user, error: action.payload}
         default:
             return user
     }

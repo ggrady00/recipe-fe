@@ -31,7 +31,7 @@ const App = () => {
     },[dispatch])
 
     useEffect(()=>{
-        if (Object.keys(user).length) {
+        if (Object.keys(user).length && !user.error) {
             setCurrentForm("")
             setLoggedIn(true)
         }

@@ -50,7 +50,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
             <Grid2 css={mainContainer} container alignItems="stretch" spacing={3} >
                 {filteredRecipes.map(recipe => (
                     <Grid2 key={recipe.id} xs={12} sm={6}>
-                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} setCurrentForm={setCurrentForm}/>
+                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} setCurrentForm={setCurrentForm} user={user}/>
                     </Grid2>
                 ))}
             </Grid2>

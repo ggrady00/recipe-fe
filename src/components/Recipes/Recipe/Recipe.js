@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardActions,
@@ -29,13 +29,15 @@ import { useDispatch, useSelector } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { deleteRecipe } from "../../../actions/recipes";
 import placeholder from "../../../images/food.jpg"
+import { createRating } from "../../../actions/ratings";
 
-const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm }) => {
+const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, user }) => {
   const ratings = useSelector((state) => state.ratings);
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
   const average = recipeRatings[0] ? recipeRatings[0].average : 0;
-  const [rating, setRating] = useState(null);
   const dispatch = useDispatch()
+  
+  const userRating = recipeRatings[0]?.ratings.filter(rating => rating.user_id === user.id)[0]?.rating
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -57,6 +59,10 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm })
     handleClose()
     setCurrentForm("edit")
     setCurrentId(recipe.id)
+  }
+
+  const handleRatingChange = (value) => {
+    dispatch(createRating(recipe.id, {rating: value}))
   }
 
   return (
@@ -117,6 +123,8 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm })
           </div>
         ) : null}
       </CardContent>
+
+
       <CardActions css={cardActions}>
         <Button size="small" color="primary" onClick={() => {}}>
           &nbsp; Rating &nbsp;
@@ -125,8 +133,9 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm })
         <Rating
           name="rating"
           precision={0.5}
+          value={userRating || 0}
           onChange={(e) => {
-            setRating(e.target.value);
+            handleRatingChange(+e.target.value);
           }}
         ></Rating>
         {currentId == null ? (

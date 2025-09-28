@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import React, {useEffect, useState} from "react";
-import {Container, AppBar, Typography, Grow, Grid, Button, Toolbar, Autocomplete, TextField} from '@mui/material'
+import {Container, AppBar, Typography, Grow, Grid, Button, Toolbar} from '@mui/material'
 import {useDispatch, useSelector} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
@@ -13,7 +13,8 @@ import Recipes from "./components/Recipes/Recipes"
 import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
 import Profile from "./components/Profile/Profile";
-import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar, rightToolbar, filterBar, filterFields} from "./styles";
+import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar, rightToolbar} from "./styles";
+import Filter from "./components/Filter/Filter";
 
 const App = () => {
     const [currentId, setCurrentId] = useState(null)
@@ -22,8 +23,6 @@ const App = () => {
     const user = useSelector((state) => state.user)
     const [loggedIn, setLoggedIn] = useState(null)
     const [filterRecipesByUser, setFilterRecipesByUser] = useState(null)
-    const allIngredients = useSelector((state) => state.ingredients)
-    const allTags = useSelector((state) => state.tags)
     const [filteringRecipes, setFilteringRecipes] = useState(null)
     const [filterIngredients, setFilterIngredients] = useState([])
     const [filterTags, setFilterTags] = useState([])
@@ -54,10 +53,8 @@ const App = () => {
         setFilteringRecipes(false)
     }
 
-    const handleClearFilter = () => {
-        setFilterIngredients([])
-        setFilterTags([])
-    }
+    
+    
 
     return (
     <Container maxWidth="lg">
@@ -79,35 +76,10 @@ const App = () => {
                 </div>
             </Toolbar>
         </AppBar>
-        <div css={filterBar}>
-        <Button css={button} variant="contained" onClick={()=>setFilteringRecipes(filteringRecipes === true ? false : true)}>Filter</Button>
-        {filteringRecipes && 
-        <div css={filterFields}>
-        <Autocomplete
-            className="filter-autocomplete"
-            multiple
-            options={allIngredients || []}
-            getOptionLabel={(option) => option.name}
-            onChange={(e, value) => setFilterIngredients(value)}
-            value={filterIngredients}
-            renderInput={(params) => (
-                <TextField {...params} label="Filter Ingredients"/>
-            )}
-        ></Autocomplete>
-        <Autocomplete
-        className="filter-autocomplete"
-            multiple
-            options={allTags || []}
-            getOptionLabel={(option) => option.name}
-            onChange={(e, value) => setFilterTags(value)}
-            value={filterTags}
-            renderInput={(params) => (
-                <TextField {...params} label="Filter Tags"/>
-            )}
-        ></Autocomplete>
-        <Button css={button} variant="contained" onClick={handleClearFilter}>Clear</Button>
-        </div>}
-        </div>
+        
+        <Filter setFilteringRecipes={setFilteringRecipes} filteringRecipes={filteringRecipes} setFilterIngredients={setFilterIngredients} filterIngredients={filterIngredients} setFilterTags={setFilterTags} filterTags={filterTags}></Filter>
+
+        
         <Grow in>
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>

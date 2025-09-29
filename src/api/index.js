@@ -14,3 +14,6 @@ export const postIngredients = (newIng) => axios.post(`${url}/api/ingredients`, 
 export const fetchTags = () => axios.get(`${url}/api/tags`)
 export const postTags = (newTag) => axios.post(`${url}/api/tags`, newTag)
 export const patchRecipe = (recipeId, recipe) => axios.patch(`${url}/api/recipes/${recipeId}`, recipe)
+export const postRating = (recipeId, rating) => axios.post(`${url}/api/ratings/${recipeId}`, rating)
+export const patchRating = (recipeId, rating) => axios.patch(`${url}/api/ratings/${recipeId}`, rating)
+export const deleteRating = (recipeId) => axios.delete(`${url}/api/ratings/${recipeId}`)

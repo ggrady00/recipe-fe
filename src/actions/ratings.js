@@ -18,3 +18,25 @@ export const createRating = (recipeId, rating) => async(dispatch) => {
     })
     .catch(err => console.log(err.message))
 }
+
+export const patchRating = (recipeId, rating) => async(dispatch) => {
+    api.patchRating(recipeId, rating)
+    .then(() => {
+        return api.fetchRatings()
+    })
+    .then(({data}) => {
+        dispatch({type:"FETCH_ALL_RATINGS", payload: data.ratings})
+    })
+    .catch(err => console.log(err.message))
+}
+
+export const deleteRating = (recipeId) => async(dispatch) => {
+    api.deleteRating(recipeId)
+    .then(() => {
+        return api.fetchRatings()
+    })
+    .then(({data}) => {
+        dispatch({type:"FETCH_ALL_RATINGS", payload: data.ratings})
+    })
+    .catch(err => console.log(err.message))
+}

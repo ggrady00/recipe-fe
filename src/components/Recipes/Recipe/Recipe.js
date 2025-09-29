@@ -29,12 +29,13 @@ import { useDispatch, useSelector } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { deleteRecipe } from "../../../actions/recipes";
 import placeholder from "../../../images/food.jpg"
-import { createRating } from "../../../actions/ratings";
+import { createRating, deleteRating, patchRating } from "../../../actions/ratings";
+
 
 const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, user }) => {
   const ratings = useSelector((state) => state.ratings);
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
-  const average = recipeRatings[0] ? recipeRatings[0].average : 0;
+  const average = recipeRatings[0] ? recipeRatings[0].average.toFixed(2) : "0.00";
   const dispatch = useDispatch()
   
   const userRating = recipeRatings[0]?.ratings.filter(rating => rating.user_id === user.id)[0]?.rating
@@ -62,7 +63,9 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
   }
 
   const handleRatingChange = (value) => {
-    dispatch(createRating(recipe.id, {rating: value}))
+    if(!userRating) dispatch(createRating(recipe.id, {rating: value}))
+    else if(userRating === value) dispatch(deleteRating(recipe.id))
+    else dispatch(patchRating(recipe.id, {rating:value}))
   }
 
   return (
@@ -127,12 +130,12 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
 
       <CardActions css={cardActions}>
         <Button size="small" color="primary" onClick={() => {}}>
-          &nbsp; Rating &nbsp;
+          &nbsp; Avg Rating &nbsp;
           {average}
         </Button>
         <Rating
           name="rating"
-          precision={0.5}
+          precision={1}
           value={userRating || 0}
           onChange={(e) => {
             handleRatingChange(+e.target.value);

@@ -19,9 +19,6 @@ export const border = css`
   border: solid;
 `;
 
-export const fullHeightCard = css`
-  height: 100%;
-`;
 
 export const card = css`
   display: flex;
@@ -30,6 +27,14 @@ export const card = css`
   border-radius: 15px;
   height: 100%;
   position: relative;
+  width: 350px;
+`;
+
+export const fullscreenCard = css`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 `;
 
 export const overlay = css`
@@ -61,7 +66,20 @@ export const title = css`
 `;
 
 export const cardActions = css`
-  padding: 0 16px 8px 16px;
+  padding: 0 8px 4px 8px;
   display: flex;
   justify-content: space-between;
 `;
+
+export const fullscreenCardActions = css`
+  padding: 0 16px 8px 16px;
+  display: flex;
+  justify-content: flex-start;
+  gap: 16px;
+`;
+
+export const allComments = css`
+  display: flex;
+  gap: 8px;
+  
+`

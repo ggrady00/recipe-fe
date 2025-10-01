@@ -23,6 +23,9 @@ import {
   overlay2,
   title,
   fullscreenMedia,
+  fullscreenCard,
+  fullscreenCardActions,
+  allComments,
 } from "./styles";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,13 +35,15 @@ import placeholder from "../../../images/food.jpg"
 import { createRating, deleteRating, patchRating } from "../../../actions/ratings";
 
 
+
 const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, user }) => {
   const ratings = useSelector((state) => state.ratings);
+  const comments = useSelector((state) => state.comments);
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
   const average = recipeRatings[0] ? recipeRatings[0].average.toFixed(2) : "0.00";
   const dispatch = useDispatch()
   
-  const userRating = recipeRatings[0]?.ratings.filter(rating => rating.user_id === user.id)[0]?.rating
+  const userRating = recipeRatings[0]?.ratings.filter(rating => rating.user_id === user?.id)[0]?.rating
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -69,7 +74,7 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
   }
 
   return (
-    <Card css={card}>
+    <Card css={currentId == recipe.id ? fullscreenCard : card}>
       <CardMedia
         css={currentId == recipe.id ? fullscreenMedia : media}
         image={placeholder}
@@ -128,7 +133,7 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
       </CardContent>
 
 
-      <CardActions css={cardActions}>
+      <CardActions css={currentId == recipe.id ? fullscreenCardActions : cardActions}>
         <Button size="small" color="primary" onClick={() => {}}>
           &nbsp; Avg Rating &nbsp;
           {average}
@@ -151,6 +156,19 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
           </Button>
         ) : null}
       </CardActions>
+      <CardContent>
+      {currentId ? (
+          <div>
+            <Typography variant="h6">Comments ({comments.length})</Typography>
+            {comments.map((comment) => (
+            <div key={comment.id} css={allComments}>
+              <Typography variant="subtitle2" fontWeight="bold">{comment.username}</Typography>
+              <Typography variant="body2">{comment.body}</Typography>
+            </div>
+          ))}
+          </div>
+        ) : null}
+      </CardContent>
     </Card>
   );
 };

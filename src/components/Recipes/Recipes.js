@@ -1,13 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import React, { useState } from "react";
-import {useSelector} from "react-redux"
+import React, { useEffect, useState } from "react";
+import {useDispatch, useSelector} from "react-redux"
 import Recipe from './Recipe/Recipe'
 import { Grid2, CircularProgress, Dialog } from "@mui/material";
 import { mainContainer } from "./styles";
 import {Button} from "@mui/material";
+import { getCommentsById } from "../../actions/comments";
 
 
 const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags}) => {
+    const dispatch = useDispatch()
+    
+    useEffect(()=>{
+        if(currentId) {
+            dispatch(getCommentsById(currentId))
+        }
+      },[currentId])
+
+
     const recipes = useSelector((state)=>state.recipes)
     const user = useSelector((state) => state.user)
 

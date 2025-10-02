@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Card,
   CardActions,
@@ -28,28 +28,43 @@ import {
   fullscreenCard,
   fullscreenCardActions,
   allComments,
+  commentSection,
 } from "./styles";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { deleteRecipe } from "../../../actions/recipes";
-import placeholder from "../../../images/food.jpg"
-import { createRating, deleteRating, patchRating } from "../../../actions/ratings";
+import placeholder from "../../../images/food.jpg";
+import {
+  createRating,
+  deleteRating,
+  patchRating,
+} from "../../../actions/ratings";
 import { postCommentsById } from "../../../actions/comments";
 
-
-
-const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, user }) => {
+const Recipe = ({
+  recipe,
+  setCurrentId,
+  currentId,
+  showDelete,
+  setCurrentForm,
+  user,
+}) => {
   const ratings = useSelector((state) => state.ratings);
   const comments = useSelector((state) => state.comments);
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
-  const average = recipeRatings[0] ? recipeRatings[0].average.toFixed(2) : "0.00";
-  const dispatch = useDispatch()
-  const [newComment, setNewComment] = useState("")
-  const [addingComment, setAddingComment] = useState(null)
-  const [showCommentError, setShowCommentError] = useState(null)
-  
-  const userRating = recipeRatings[0]?.ratings.filter(rating => rating.user_id === user?.id)[0]?.rating
+  const average = recipeRatings[0]
+    ? recipeRatings[0].average.toFixed(2)
+    : "0.00";
+  const dispatch = useDispatch();
+  const [newComment, setNewComment] = useState("");
+  const [addingComment, setAddingComment] = useState(null);
+  const [showCommentError, setShowCommentError] = useState(null);
+  const commentSectionRef = useRef(null);
+
+  const userRating = recipeRatings[0]?.ratings.filter(
+    (rating) => rating.user_id === user?.id
+  )[0]?.rating;
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -63,36 +78,51 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
 
   const handleDelete = () => {
     handleClose();
-    dispatch(deleteRecipe(recipe.id))
-    
-  }
+    dispatch(deleteRecipe(recipe.id));
+  };
 
   const handleEdit = () => {
-    handleClose()
-    setCurrentForm("edit")
-    setCurrentId(recipe.id)
-  }
+    handleClose();
+    setCurrentForm("edit");
+    setCurrentId(recipe.id);
+  };
 
   const handleRatingChange = (value) => {
-    if(!userRating) dispatch(createRating(recipe.id, {rating: value}))
-    else if(userRating === value) dispatch(deleteRating(recipe.id))
-    else dispatch(patchRating(recipe.id, {rating:value}))
-  }
+    if (!userRating) dispatch(createRating(recipe.id, { rating: value }));
+    else if (userRating === value) dispatch(deleteRating(recipe.id));
+    else dispatch(patchRating(recipe.id, { rating: value }));
+  };
 
   const handleCancelComment = () => {
-    setAddingComment(false)
-    setNewComment("")
-    setShowCommentError(false)
-  }
+    setAddingComment(false);
+    setNewComment("");
+    setShowCommentError(false);
+  };
 
   const handleSubmitComment = () => {
-    if(!user.username) {
-      setShowCommentError(true)
-      return
+    if (!user.username) {
+      setShowCommentError(true);
+      return;
     }
-    dispatch(postCommentsById(recipe.id, {body: newComment}))
-    setNewComment("")
-  }
+    dispatch(postCommentsById(recipe.id, { body: newComment }));
+    setNewComment("");
+  };
+
+  useEffect(()=>{
+    if(addingComment && commentSectionRef.current) {
+      commentSectionRef.current.scrollIntoView({behavior: "smooth", block: "center"})
+    }
+  },[addingComment])
+
+  useEffect(()=>{
+    if(showCommentError && commentSectionRef.current) {
+      commentSectionRef.current.scrollIntoView({behavior: "smooth", block: "center"})
+    }
+  },[showCommentError])
+
+  const handleCommentFieldClick = () => {
+    setAddingComment(true);
+  };
 
   return (
     <Card css={currentId == recipe.id ? fullscreenCard : card}>
@@ -153,8 +183,9 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
         ) : null}
       </CardContent>
 
-
-      <CardActions css={currentId == recipe.id ? fullscreenCardActions : cardActions}>
+      <CardActions
+        css={currentId == recipe.id ? fullscreenCardActions : cardActions}
+      >
         <Button size="small" color="primary" onClick={() => {}}>
           &nbsp; Avg Rating &nbsp;
           {average}
@@ -178,22 +209,40 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
         ) : null}
       </CardActions>
       <CardContent>
-      {currentId ? (
+        {currentId ? (
           <div>
             <Typography variant="h6">Comments ({comments.length})</Typography>
-            {comments.map((comment) => (
-            <div key={comment.id} css={allComments}>
-              <Typography variant="subtitle2" fontWeight="bold">{comment.username}</Typography>
-              <Typography variant="body2">{comment.body}</Typography>
-            </div>
-          ))}
-            <TextField name="comment" variant="outlined" label="Leave a comment" fullWidth value={newComment} onChange={(e) => setNewComment(e.target.value)} onClick={()=>setAddingComment(true)}></TextField>
-            {addingComment && 
             <div>
-              <Button onClick={handleCancelComment}>Cancel</Button>
-              <Button onClick={handleSubmitComment}>Comment</Button>
-              {showCommentError && <Alert severity="error">You must login to leave a comment</Alert>}
-            </div>}
+              <TextField
+                name="comment"
+                variant="outlined"
+                label="Leave a comment"
+                fullWidth
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                onClick={handleCommentFieldClick}
+              ></TextField>
+              {addingComment && (
+                <div ref={commentSectionRef} css={commentSection}>
+                  <Button onClick={handleCancelComment}>Cancel</Button>
+                  <Button onClick={handleSubmitComment}>Comment</Button>
+                  {showCommentError && (
+                    <Alert severity="error">
+                      You must login to leave a comment
+                    </Alert>
+                  )}
+                </div>
+              )}
+            </div>
+            {comments.map((comment) => (
+              <div key={comment.id} css={allComments}>
+                <Typography variant="subtitle2" fontWeight="bold">
+                  {comment.username}
+                </Typography>
+                <Typography variant="body2">{comment.body}</Typography>
+              </div>
+            ))}
+            
           </div>
         ) : null}
       </CardContent>

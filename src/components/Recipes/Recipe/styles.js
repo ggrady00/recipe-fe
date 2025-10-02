@@ -33,8 +33,9 @@ export const card = css`
 export const fullscreenCard = css`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 100vh;
   width: 100%;
+  overflow-y: auto;
 `;
 
 export const overlay = css`
@@ -82,4 +83,8 @@ export const allComments = css`
   display: flex;
   gap: 8px;
   
+`
+
+export const commentSection = css`
+  padding-bottom: 20px;
 `

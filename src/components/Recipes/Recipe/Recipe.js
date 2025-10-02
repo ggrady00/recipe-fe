@@ -11,6 +11,8 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  TextField,
+  Alert,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -33,6 +35,7 @@ import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { deleteRecipe } from "../../../actions/recipes";
 import placeholder from "../../../images/food.jpg"
 import { createRating, deleteRating, patchRating } from "../../../actions/ratings";
+import { postCommentsById } from "../../../actions/comments";
 
 
 
@@ -42,6 +45,9 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
   const average = recipeRatings[0] ? recipeRatings[0].average.toFixed(2) : "0.00";
   const dispatch = useDispatch()
+  const [newComment, setNewComment] = useState("")
+  const [addingComment, setAddingComment] = useState(null)
+  const [showCommentError, setShowCommentError] = useState(null)
   
   const userRating = recipeRatings[0]?.ratings.filter(rating => rating.user_id === user?.id)[0]?.rating
 
@@ -71,6 +77,21 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
     if(!userRating) dispatch(createRating(recipe.id, {rating: value}))
     else if(userRating === value) dispatch(deleteRating(recipe.id))
     else dispatch(patchRating(recipe.id, {rating:value}))
+  }
+
+  const handleCancelComment = () => {
+    setAddingComment(false)
+    setNewComment("")
+    setShowCommentError(false)
+  }
+
+  const handleSubmitComment = () => {
+    if(!user.username) {
+      setShowCommentError(true)
+      return
+    }
+    dispatch(postCommentsById(recipe.id, {body: newComment}))
+    setNewComment("")
   }
 
   return (
@@ -166,6 +187,13 @@ const Recipe = ({ recipe, setCurrentId, currentId, showDelete, setCurrentForm, u
               <Typography variant="body2">{comment.body}</Typography>
             </div>
           ))}
+            <TextField name="comment" variant="outlined" label="Leave a comment" fullWidth value={newComment} onChange={(e) => setNewComment(e.target.value)} onClick={()=>setAddingComment(true)}></TextField>
+            {addingComment && 
+            <div>
+              <Button onClick={handleCancelComment}>Cancel</Button>
+              <Button onClick={handleSubmitComment}>Comment</Button>
+              {showCommentError && <Alert severity="error">You must login to leave a comment</Alert>}
+            </div>}
           </div>
         ) : null}
       </CardContent>

@@ -29,6 +29,8 @@ import {
   fullscreenCardActions,
   allComments,
   commentSection,
+  ratingSection,
+  eachComment,
 } from "./styles";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,6 +43,7 @@ import {
   patchRating,
 } from "../../../actions/ratings";
 import { postCommentsById } from "../../../actions/comments";
+import { MoreVert } from "@mui/icons-material";
 
 const Recipe = ({
   recipe,
@@ -50,6 +53,8 @@ const Recipe = ({
   setCurrentForm,
   user,
 }) => {
+
+  
   const ratings = useSelector((state) => state.ratings);
   const comments = useSelector((state) => state.comments);
   const recipeRatings = ratings.filter((rating) => rating.id === recipe.id);
@@ -125,6 +130,8 @@ const Recipe = ({
   };
 
   return (
+
+
     <Card css={currentId == recipe.id ? fullscreenCard : card}>
       <CardMedia
         css={currentId == recipe.id ? fullscreenMedia : media}
@@ -137,6 +144,9 @@ const Recipe = ({
           {moment(recipe.created_at).fromNow()}
         </Typography>
       </div>
+
+
+      
 
       {showDelete && !currentId && (
         <div css={overlay2}>
@@ -159,6 +169,10 @@ const Recipe = ({
           </Menu>
         </div>
       )}
+
+
+
+      {/* Card Content */}
 
       <div css={details}>
         <Typography variant="body2" color="textSecondary">
@@ -183,13 +197,15 @@ const Recipe = ({
         ) : null}
       </CardContent>
 
+
+
+      {/* Ratings Fullscreen */}
+
       <CardActions
         css={currentId == recipe.id ? fullscreenCardActions : cardActions}
       >
-        <Button size="small" color="primary" onClick={() => {}}>
-          &nbsp; Avg Rating &nbsp;
-          {average}
-        </Button>
+        <div css={ratingSection}>
+        <Typography>{average}</Typography>
         <Rating
           name="rating"
           precision={1}
@@ -198,6 +214,8 @@ const Recipe = ({
             handleRatingChange(+e.target.value);
           }}
         ></Rating>
+        <Typography>({recipeRatings[0].ratings.length})</Typography>
+        </div>
         {currentId == null ? (
           <Button
             color="primary"
@@ -208,44 +226,58 @@ const Recipe = ({
           </Button>
         ) : null}
       </CardActions>
-      <CardContent>
-        {currentId ? (
+
+
+      {/* Comments */}
+
+      {currentId && (
+        <CardContent>
+        <div>
+          <Typography variant="h6">Comments ({comments.length})</Typography>
           <div>
-            <Typography variant="h6">Comments ({comments.length})</Typography>
-            <div>
-              <TextField
-                name="comment"
-                variant="outlined"
-                label="Leave a comment"
-                fullWidth
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                onClick={handleCommentFieldClick}
-              ></TextField>
-              {addingComment && (
-                <div ref={commentSectionRef} css={commentSection}>
-                  <Button onClick={handleCancelComment}>Cancel</Button>
-                  <Button onClick={handleSubmitComment}>Comment</Button>
-                  {showCommentError && (
-                    <Alert severity="error">
-                      You must login to leave a comment
-                    </Alert>
-                  )}
-                </div>
+            <TextField
+              name="comment"
+              variant="outlined"
+              label="Leave a comment"
+              fullWidth
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              onClick={handleCommentFieldClick}
+            ></TextField>
+            {addingComment && (
+              <div ref={commentSectionRef} css={commentSection}>
+                <Button onClick={handleCancelComment}>Cancel</Button>
+                <Button onClick={handleSubmitComment}>Comment</Button>
+                {showCommentError && (
+                  <Alert severity="error">
+                    You must login to leave a comment
+                  </Alert>
+                )}
+              </div>
+            )}
+          </div>
+          {comments.map((comment) => (
+            <div key={comment.id} css={allComments}>
+              <div css={eachComment}>
+              <Typography variant="subtitle2" fontWeight="bold">
+                {comment.username}
+              </Typography>
+              {/* add time stamp */}
+              <Typography variant="body2">{comment.body}</Typography>
+              </div>
+              {comment.user_id === user.id && (
+                <IconButton>
+                  <MoreVert></MoreVert> {/* Add delete and edit comment */}
+                </IconButton>
               )}
             </div>
-            {comments.map((comment) => (
-              <div key={comment.id} css={allComments}>
-                <Typography variant="subtitle2" fontWeight="bold">
-                  {comment.username}
-                </Typography>
-                <Typography variant="body2">{comment.body}</Typography>
-              </div>
-            ))}
-            
-          </div>
-        ) : null}
-      </CardContent>
+          ))}
+        </div>
+    </CardContent>
+      )}
+
+{console.log(comments)}
+
     </Card>
   );
 };

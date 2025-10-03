@@ -67,10 +67,16 @@ export const title = css`
 `;
 
 export const cardActions = css`
-  padding: 0 8px 4px 8px;
+  padding: 0 8px 8px 8px;
   display: flex;
   justify-content: space-between;
 `;
+
+export const ratingSection = css`
+  display: flex;
+  gap: 8px;
+  margin: 8px;
+`
 
 export const fullscreenCardActions = css`
   padding: 0 16px 8px 16px;
@@ -81,8 +87,14 @@ export const fullscreenCardActions = css`
 
 export const allComments = css`
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+`
+
+export const eachComment = css`
+  display: flex;
   gap: 8px;
-  
 `
 
 export const commentSection = css`

@@ -20,3 +20,15 @@ export const postCommentsById = (recipeId, comment) => async(dispatch) => {
     })
     .catch(err => console.log(err.message))
 }
+
+export const deleteCommentById = (commentId, recipeId) => async(dispatch) => {
+    api.deleteCommentById(commentId)
+    .then(()=>{
+        return api.getCommentsById(recipeId)
+    })
+    .then(({data})=>{
+        
+        dispatch({type:"FETCH_COMMENTS_BY_ID", payload: data.comments})
+    })
+    .catch(err => console.log(err.message))
+}

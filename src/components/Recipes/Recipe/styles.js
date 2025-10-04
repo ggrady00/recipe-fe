@@ -72,11 +72,6 @@ export const cardActions = css`
   justify-content: space-between;
 `;
 
-export const ratingSection = css`
-  display: flex;
-  gap: 8px;
-  margin: 8px;
-`
 
 export const fullscreenCardActions = css`
   padding: 0 16px 8px 16px;
@@ -84,19 +79,3 @@ export const fullscreenCardActions = css`
   justify-content: flex-start;
   gap: 16px;
 `;
-
-export const allComments = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 0;
-`
-
-export const eachComment = css`
-  display: flex;
-  gap: 8px;
-`
-
-export const commentSection = css`
-  padding-bottom: 20px;
-`

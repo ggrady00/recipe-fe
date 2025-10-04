@@ -19,3 +19,4 @@ export const patchRating = (recipeId, rating) => axios.patch(`${url}/api/ratings
 export const deleteRating = (recipeId) => axios.delete(`${url}/api/ratings/${recipeId}`)
 export const getCommentsById = (recipeId) => axios.get(`${url}/api/comments/${recipeId}`)
 export const postCommentById = (recipeId, comment) => axios.post(`${url}/api/comments/${recipeId}`, comment)
+export const deleteCommentById = (commentId) => axios.delete(`${url}/api/comments/${commentId}`)

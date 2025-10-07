@@ -26,6 +26,7 @@ const App = () => {
     const [filteringRecipes, setFilteringRecipes] = useState(null)
     const [filterIngredients, setFilterIngredients] = useState([])
     const [filterTags, setFilterTags] = useState([])
+    const [showSavedRecipes, setShowSavedRecipes] = useState(null)
 
     useEffect(()=>{
         dispatch(getRecipes())
@@ -51,6 +52,7 @@ const App = () => {
         setCurrentForm("")
         setCurrentId(null)
         setFilteringRecipes(false)
+        setShowSavedRecipes(false)
     }
 
     
@@ -71,7 +73,7 @@ const App = () => {
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "register" ? "" : "register"))}>Register</Button>}
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "login" ? "" : "login"))}>Login</Button>}
                     {loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "upload" ? "" : "upload"))}>Upload</Button>} 
-                    {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser}/>} 
+                    {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser} setShowSavedRecipes={setShowSavedRecipes}/>} 
                     {/* add profile functionality */}
                 </div>
             </Toolbar>
@@ -84,7 +86,7 @@ const App = () => {
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={currentForm ? 8 : 12}>
-                        {(currentForm !== "upload" && currentForm !== "edit") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags}/>}
+                        {(currentForm !== "upload" && currentForm !== "edit") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes}/>}
                         {(currentForm === 'upload' || currentForm === "edit") && <Form currentForm={currentForm} currentId={currentId} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId}/>}
                     </Grid>
                     <Grid item xs={12} sm={4}>

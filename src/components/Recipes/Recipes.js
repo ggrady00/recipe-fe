@@ -8,7 +8,7 @@ import {Button} from "@mui/material";
 import { getCommentsById } from "../../actions/comments";
 
 
-const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags}) => {
+const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags, showSavedRecipes}) => {
     const dispatch = useDispatch()
     
     useEffect(()=>{
@@ -20,10 +20,18 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
 
     const recipes = useSelector((state)=>state.recipes)
     const user = useSelector((state) => state.user)
+    const savedRecipes = useSelector((state) => state.savedRecipes)
+    console.log(savedRecipes)
 
     if(!recipes.length) return <CircularProgress />
     
     let filteredRecipes = filterRecipesByUser ? recipes.filter(recipe => recipe.created_by === user.username) : recipes
+    const savedRecipeIds = savedRecipes.map(recipe => recipe.recipe_id)
+    if(showSavedRecipes) {
+        filteredRecipes = recipes.filter(recipe => savedRecipeIds.includes(recipe.id) )
+        
+    }
+    
     if(filterIngredients.length > 0) {
         filteredRecipes = filteredRecipes.filter(recipe => {
             return filterIngredients.every(ing => {
@@ -39,6 +47,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
         })
     }
     const showDelete = filterRecipesByUser ? true : false
+    
 
     if(currentId) {
         const recipe = recipes.filter(recipe => recipe.id === currentId)[0]

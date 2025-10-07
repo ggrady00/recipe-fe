@@ -20,3 +20,5 @@ export const deleteRating = (recipeId) => axios.delete(`${url}/api/ratings/${rec
 export const getCommentsById = (recipeId) => axios.get(`${url}/api/comments/${recipeId}`)
 export const postCommentById = (recipeId, comment) => axios.post(`${url}/api/comments/${recipeId}`, comment)
 export const deleteCommentById = (commentId) => axios.delete(`${url}/api/comments/${commentId}`)
+export const fetchSavedRecipes = () => axios.get(`${url}/api/saved-recipes`)
+export const postSavedRecipes = (recipeId) => axios.post(`${url}/api/saved-recipes`, recipeId)

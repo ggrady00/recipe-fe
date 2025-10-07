@@ -63,6 +63,10 @@ const Recipe = ({
     setCurrentId(recipe.id);
   };
 
+  const handleSaveButton = () => {
+
+  }
+
   return (
 
 
@@ -136,6 +140,7 @@ const Recipe = ({
         css={currentId == recipe.id ? fullscreenCardActions : cardActions}
       >
         <Ratings recipe={recipe} user={user}></Ratings>
+        <Button onClick={handleSaveButton}>Save</Button>
         {currentId == null ? (
           <Button
             color="primary"

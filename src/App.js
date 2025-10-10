@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 
 import { getRecipes } from "./actions/recipes"
 import { getRatings } from "./actions/ratings";
+import { getSavedRecipes } from "./actions/saved-recipes";
 import {getIngredients} from "./actions/ingredients"
 import {getTags} from "./actions/tags"
 import recipes from "./images/recipes.png"
@@ -39,6 +40,7 @@ const App = () => {
         if (Object.keys(user).length && !user.error) {
             setCurrentForm("")
             setLoggedIn(true)
+            dispatch(getSavedRecipes())
         }
 
         if (!Object.keys(user).length) {
@@ -73,13 +75,13 @@ const App = () => {
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "register" ? "" : "register"))}>Register</Button>}
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "login" ? "" : "login"))}>Login</Button>}
                     {loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "upload" ? "" : "upload"))}>Upload</Button>} 
-                    {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser} setShowSavedRecipes={setShowSavedRecipes}/>} 
+                    {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser} setShowSavedRecipes={setShowSavedRecipes} setCurrentForm={setCurrentForm}/>} 
                     {/* add profile functionality */}
                 </div>
             </Toolbar>
         </AppBar>
         
-        <Filter setFilteringRecipes={setFilteringRecipes} filteringRecipes={filteringRecipes} setFilterIngredients={setFilterIngredients} filterIngredients={filterIngredients} setFilterTags={setFilterTags} filterTags={filterTags}></Filter>
+        {(currentForm !== "upload" && currentForm !== "edit") && <Filter setFilteringRecipes={setFilteringRecipes} filteringRecipes={filteringRecipes} setFilterIngredients={setFilterIngredients} filterIngredients={filterIngredients} setFilterTags={setFilterTags} filterTags={filterTags}></Filter>}
 
         
         <Grow in>

@@ -22,3 +22,4 @@ export const postCommentById = (recipeId, comment) => axios.post(`${url}/api/com
 export const deleteCommentById = (commentId) => axios.delete(`${url}/api/comments/${commentId}`)
 export const fetchSavedRecipes = () => axios.get(`${url}/api/saved-recipes`)
 export const postSavedRecipes = (recipeId) => axios.post(`${url}/api/saved-recipes`, recipeId)
+export const deleteSavedRecipes = (recipeId) => axios.delete(`${url}/api/saved-recipes`, {data : recipeId})

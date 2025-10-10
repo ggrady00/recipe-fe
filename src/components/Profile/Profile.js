@@ -3,9 +3,8 @@ import { Button, Menu, MenuItem } from "@mui/material";
 import {button} from "./styles"
 import { useDispatch } from "react-redux";
 import { logout } from "../../actions/user";
-import {getSavedRecipes} from "../../actions/saved-recipes"
 
-const Profile = ({loggedInUser,setFilterRecipesByUser, setShowSavedRecipes}) => {
+const Profile = ({loggedInUser,setFilterRecipesByUser, setShowSavedRecipes, setCurrentForm}) => {
     const [anchorEl, setAnchorEl] = useState(null)
     const dispatch = useDispatch()
 
@@ -26,12 +25,15 @@ const Profile = ({loggedInUser,setFilterRecipesByUser, setShowSavedRecipes}) => 
 
     const handleMyRecipes = () => {
         handleClose();
+        setCurrentForm(null)
+        setShowSavedRecipes(false)
         setFilterRecipesByUser(true)
     }
 
     const handleSavedRecipes = () => {
         handleClose()
-        dispatch(getSavedRecipes())
+        setCurrentForm(null)
+        setFilterRecipesByUser(false)
         setShowSavedRecipes(true)
     }
 

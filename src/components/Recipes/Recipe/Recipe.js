@@ -31,6 +31,7 @@ import { deleteRecipe } from "../../../actions/recipes";
 import placeholder from "../../../images/food.jpg";
 import Comments from "./Comments/Comments"
 import Ratings from "./Ratings/Ratings";
+import { deleteSavedRecipes, postSavedRecipes } from "../../../actions/saved-recipes";
 
 const Recipe = ({
   recipe,
@@ -39,6 +40,7 @@ const Recipe = ({
   showDelete,
   setCurrentForm,
   user,
+  savedRecipes,
 }) => {
   const dispatch = useDispatch();
 
@@ -64,8 +66,9 @@ const Recipe = ({
   };
 
   const handleSaveButton = () => {
-
+    savedRecipes.some(saved => saved.recipe_id === recipe.id) ? dispatch(deleteSavedRecipes({"recipe_id" : recipe.id})) : dispatch(postSavedRecipes({"recipe_id" : recipe.id}))
   }
+
 
   return (
 
@@ -140,7 +143,7 @@ const Recipe = ({
         css={currentId == recipe.id ? fullscreenCardActions : cardActions}
       >
         <Ratings recipe={recipe} user={user}></Ratings>
-        <Button onClick={handleSaveButton}>Save</Button>
+        <Button onClick={handleSaveButton}>{savedRecipes.some(saved => saved.recipe_id === recipe.id) ? "Unsave" : "Save"}</Button>
         {currentId == null ? (
           <Button
             color="primary"

@@ -21,7 +21,6 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
     const recipes = useSelector((state)=>state.recipes)
     const user = useSelector((state) => state.user)
     const savedRecipes = useSelector((state) => state.savedRecipes)
-    console.log(savedRecipes)
 
     if(!recipes.length) return <CircularProgress />
     
@@ -69,7 +68,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
             <Grid2 css={mainContainer} container alignItems="stretch" spacing={3} >
                 {filteredRecipes.map(recipe => (
                     <Grid2 key={recipe.id} xs={12} sm={6}>
-                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} setCurrentForm={setCurrentForm} user={user}/>
+                        <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} setCurrentForm={setCurrentForm} user={user} savedRecipes={savedRecipes}/>
                     </Grid2>
                 ))}
             </Grid2>

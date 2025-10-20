@@ -143,7 +143,7 @@ const Recipe = ({
         css={currentId == recipe.id ? fullscreenCardActions : cardActions}
       >
         <Ratings recipe={recipe} user={user}></Ratings>
-        <Button onClick={handleSaveButton}>{savedRecipes.some(saved => saved.recipe_id === recipe.id) ? "Unsave" : "Save"}</Button>
+        <Button onClick={handleSaveButton}>{savedRecipes?.some(saved => saved.recipe_id === recipe.id) ? "Unsave" : "Save"}</Button>
         {currentId == null ? (
           <Button
             color="primary"

@@ -66,7 +66,7 @@ const Recipe = ({
   };
 
   const handleSaveButton = () => {
-    savedRecipes.some(saved => saved.recipe_id === recipe.id) ? dispatch(deleteSavedRecipes({"recipe_id" : recipe.id})) : dispatch(postSavedRecipes({"recipe_id" : recipe.id}))
+    savedRecipes?.some(saved => saved.recipe_id === recipe.id) ? dispatch(deleteSavedRecipes({"recipe_id" : recipe.id})) : dispatch(postSavedRecipes({"recipe_id" : recipe.id}))
   }
 
 

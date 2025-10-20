@@ -58,7 +58,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
                     >
                         Close
                     </Button>
-                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} user={user}/>
+                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} user={user} savedRecipes={savedRecipes}/>
             </Dialog>
             
         )

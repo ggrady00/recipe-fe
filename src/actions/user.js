@@ -35,3 +35,18 @@ export const logout = () => async (dispatch) => {
 
     dispatch({type: "LOGOUT"})
 }
+
+export const patchProfile = (profile) => async(dispatch) => {
+    return api.patchProfile(profile)
+    .then(()=>{
+        return api.fetchProfile()
+    })
+    .then(({data}) => {
+        dispatch({type: "FETCH_PROFILE", payload: data.profile})
+        return true;
+    })
+    .catch(err => {
+        dispatch({type: "PATCH_PROFILE_FAILURE", payload: err.response.data.msg})
+        return false;
+    })
+}

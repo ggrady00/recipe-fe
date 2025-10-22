@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Container, AppBar, Typography, Grow, Grid, Button, Toolbar} from '@mui/material'
 import {useDispatch, useSelector} from 'react-redux'
 
@@ -29,6 +29,7 @@ const App = () => {
     const [filterIngredients, setFilterIngredients] = useState([])
     const [filterTags, setFilterTags] = useState([])
     const [showSavedRecipes, setShowSavedRecipes] = useState(null)
+    const prevUserRef = useRef(null)
 
     useEffect(()=>{
         dispatch(getRecipes())
@@ -38,17 +39,24 @@ const App = () => {
     },[dispatch])
 
     useEffect(()=>{
-        if (Object.keys(user).length && !user.error) {
+
+        const prevUser = prevUserRef.current;
+        
+
+        if (!prevUser?.username && user?.username && !user.error) {
             setCurrentForm("")
             setLoggedIn(true)
             dispatch(getSavedRecipes())
         }
 
-        if (!Object.keys(user).length) {
+        if (prevUser?.username && !user?.username) {
             setCurrentForm("")
             setLoggedIn(false)
         }
+
+        prevUserRef.current = user;
     },[user])
+
 
     const handleHome = () => {
         setFilterRecipesByUser(false)
@@ -97,7 +105,7 @@ const App = () => {
                         {currentForm === 'register' && <Register />}
                     </Grid>
                 </Grid>
-                {(currentForm === "profile" && <UserProfile user={user}/>)}
+                {(currentForm === "profile" && <UserProfile user={user} setCurrentForm={setCurrentForm}/>)}
             </Container>
         </Grow>
     </Container>

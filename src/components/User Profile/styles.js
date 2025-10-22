@@ -38,3 +38,20 @@ export const profile = css`
   gap: 16px;
   margin-bottom: 32px;
 `
+
+export const topBar = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const profileInfo = css`
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+export const buttons = css`
+  display: flex;
+  gap: 8px;
+`

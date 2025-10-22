@@ -10,6 +10,8 @@ const reducer = (user = {}, action) => {
             return {}
         case "REGISTER_FAILURE":
             return {...user, error: action.payload}
+        case "PATCH_PROFILE_FAILURE":
+            return {...user, error: action.payload}
         default:
             return user
     }

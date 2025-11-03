@@ -1,62 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import { Avatar, IconButton, Paper, Typography, Button, TextField, Divider, Alert } from "@mui/material";
-import { avatar, avatarIcon, buttons, editButton, paper, profile, profileInfo, topBar } from "./styles";
-import EditIcon from '@mui/icons-material/Edit';
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { patchProfile } from "../../actions/user";
-import { getRecipes } from "../../actions/recipes";
-
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import ProfilePage from "./ProfilePage/ProfilePage";
+import MyRatings from "./MyRatings/MyRatings"
 
 const UserProfile = ({user}) => {
-    
-    const [editingProfile, setEditingProfile] = useState(null)
-    const [profileData, setProfileData] = useState({username: "", profile_info: ""})
-    const dispatch = useDispatch()
-    const {error} = useSelector((state) => state.user)
-
-    useEffect(()=>{
-        if(editingProfile) {
-            setProfileData({username: user.username, profile_info: user.profile_info})
-        }
-    },[editingProfile])
-
-    const handleSaveChanges = async () => {
-        const success = await dispatch(patchProfile(profileData))
-        if(success) {
-            setEditingProfile(false)
-            dispatch(getRecipes())
-        }
-        
-    }
-    
+    const [currentForm, setCurrentForm] = useState("profilePage")
+    const recipes = useSelector((state)=>state.recipes)
+    const savedRecipes = useSelector((state) => state.savedRecipes)
+    const ratings = useSelector((state) => state.ratings);
+    const myRatings = ratings.flatMap(recipe => {
+        return recipe.ratings.filter(rating => rating.user_id === user.id)
+    })
 
     return (
-        <Paper css={paper}>
-            <div css={topBar}>
-                <div css={profile}>
-                    <div css={avatarIcon}>
-                        <Avatar src={user.profile_pic} css={avatar} />
-                        {editingProfile && <IconButton css={editButton}> 
-                            <EditIcon />
-                        </IconButton>}
-                    </div>
-                    {!editingProfile && <Typography>{user.username}</Typography>}
-                    {editingProfile && <TextField name="username" variant="outlined" label="Username" value={profileData.username} onChange={(e)=>setProfileData({...profileData, username: e.target.value})}></TextField>}
-                </div>
-                <div css={buttons}>
-                    {editingProfile && <Button type="button" variant="contained" onClick={handleSaveChanges}>Save Changes</Button>}
-                    {error && <Alert severity="error">{error}</Alert>}
-                    <Button variant="contained" onClick={()=>setEditingProfile(editingProfile==true ? false : true)}>{editingProfile ? "Cancel" : "Edit Profile"}</Button>
-                </div>
-            </div>
-            <div css={profileInfo}>
-                <Typography variant="h6">Profile Info</Typography>
-                {!editingProfile && <Typography>{user.profile_info}</Typography>}
-                {editingProfile && <TextField name="profile_into" variant="outlined" label="Profile Info" value={profileData.profile_info} onChange={(e)=>setProfileData({...profileData, profile_info: e.target.value})} fullWidth multiline minRows={5}></TextField>}
-            </div>
-            <Divider></Divider>
-        </Paper>
+        <div>
+            {currentForm === "profilePage" && <ProfilePage user={user} recipes={recipes} savedRecipes={savedRecipes} myRatings={myRatings} setCurrentForm={setCurrentForm} />}
+            {currentForm === "myRatings" && <MyRatings setCurrentForm={setCurrentForm} myRatings={myRatings} recipes={recipes}/>}
+        </div>
     )
 }
 

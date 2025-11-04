@@ -8,7 +8,7 @@ import { patchProfile } from "../../../actions/user";
 import { getRecipes } from "../../../actions/recipes";
 
 
-const ProfilePage = ({user, recipes, savedRecipes, myRatings, setCurrentForm}) => {
+const ProfilePage = ({user, recipes, savedRecipes, myRatings, setCurrentProfileForm}) => {
     
     const [editingProfile, setEditingProfile] = useState(null)
     const [profileData, setProfileData] = useState({username: "", profile_info: ""})
@@ -61,7 +61,7 @@ const ProfilePage = ({user, recipes, savedRecipes, myRatings, setCurrentForm}) =
             <div>
                 <Typography>Recipes Uploaded: {recipes.filter(recipe => recipe.created_by === user.username).length}</Typography>
                 <Typography>Saved Recipes: {savedRecipes.length}</Typography>
-                <Typography onClick={()=>setCurrentForm("myRatings")} sx={{ cursor: "pointer", textDecoration: "underline" }}>Ratings Given: {myRatings.length}</Typography>
+                <Typography onClick={()=>setCurrentProfileForm("myRatings")} sx={{ cursor: "pointer", textDecoration: "underline" }}>Ratings Given: {myRatings.length}</Typography>
                 <Typography>Comments Left:</Typography>
 
             </div>

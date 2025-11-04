@@ -8,7 +8,7 @@ import {Button} from "@mui/material";
 import { getCommentsById } from "../../actions/comments";
 
 
-const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags, showSavedRecipes}) => {
+const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags, showSavedRecipes, previousForm, setPreviousForm}) => {
     const dispatch = useDispatch()
     
     useEffect(()=>{
@@ -53,7 +53,14 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
         return (
             <Dialog fullScreen open={!!currentId} onClose={()=>setCurrentId(null)}>
                 <Button
-                        onClick={() => setCurrentId(null)}
+                        onClick={() => {
+                            setCurrentId(null)
+                            if(previousForm) {
+                                setCurrentForm(previousForm)
+                                setPreviousForm("")
+                            }
+                            else setCurrentForm("")
+                        }}
                         style={{ position: "absolute", top: 10, right: 10, zIndex: 1000 }}
                     >
                         Close

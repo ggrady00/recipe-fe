@@ -22,6 +22,8 @@ const App = () => {
     const [currentId, setCurrentId] = useState(null)
     const dispatch = useDispatch()
     const [currentForm, setCurrentForm] = useState('')
+    const [previousForm, setPreviousForm] = useState("")
+    const [previousProfileForm, setPreviousProfileForm] = useState("")
     const user = useSelector((state) => state.user)
     const [loggedIn, setLoggedIn] = useState(null)
     const [filterRecipesByUser, setFilterRecipesByUser] = useState(null)
@@ -67,7 +69,6 @@ const App = () => {
     }
 
     
-    
 
     return (
     <Container maxWidth="lg">
@@ -97,7 +98,7 @@ const App = () => {
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={currentForm ? 8 : 12}>
-                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes}/>}
+                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes} previousForm={previousForm} setPreviousForm={setPreviousForm}/>}
                         {(currentForm === 'upload' || currentForm === "edit") && <Form currentForm={currentForm} currentId={currentId} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId}/>}
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -105,7 +106,7 @@ const App = () => {
                         {currentForm === 'register' && <Register />}
                     </Grid>
                 </Grid>
-                {(currentForm === "profile" && <UserProfile user={user} setCurrentForm={setCurrentForm}/>)}
+                {(currentForm === "profile" && <UserProfile user={user} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId} setPreviousForm={setPreviousForm} previousProfileForm={previousProfileForm} setPreviousProfileForm={setPreviousProfileForm}/>)}
             </Container>
         </Grow>
     </Container>

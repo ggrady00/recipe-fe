@@ -14,6 +14,8 @@ const Comments = ({user, recipe}) => {
   const [addingComment, setAddingComment] = useState(null);
   const [showCommentError, setShowCommentError] = useState(null);
   const commentSectionRef = useRef(null);
+  comments.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedComment, setSelectedComment] = useState(null);

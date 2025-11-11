@@ -17,6 +17,7 @@ import Profile from "./components/Profile/Profile";
 import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar, rightToolbar} from "./styles";
 import Filter from "./components/Filter/Filter";
 import UserProfile from "./components/User Profile/UserProfile";
+import { getComments } from "./actions/comments";
 
 const App = () => {
     const [currentId, setCurrentId] = useState(null)
@@ -38,6 +39,7 @@ const App = () => {
         dispatch(getRatings())
         dispatch(getIngredients())
         dispatch(getTags())
+        dispatch(getComments())
     },[dispatch])
 
     useEffect(()=>{

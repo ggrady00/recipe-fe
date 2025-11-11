@@ -30,5 +30,19 @@ export const deleteCommentById = (commentId, recipeId) => async(dispatch) => {
         
         dispatch({type:"FETCH_COMMENTS_BY_ID", payload: data.comments})
     })
+    .then(()=>{
+        return api.fetchComments()
+    })
+    .then(({data}) => {
+        dispatch({type:"FETCH_ALL_COMMENTS", payload: data.comments})
+    })
+    .catch(err => console.log(err.message))
+}
+
+export const getComments = () => async(dispatch) => {
+    api.fetchComments()
+    .then(({data}) => {
+        dispatch({type:"FETCH_ALL_COMMENTS", payload: data.comments})
+    })
     .catch(err => console.log(err.message))
 }

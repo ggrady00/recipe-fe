@@ -4,7 +4,7 @@ import { avatar, avatarIcon, buttons, editButton, paper, profile, profileInfo, t
 import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { patchProfile } from "../../../actions/user";
+import { clearUserError, patchProfile } from "../../../actions/user";
 import { getRecipes } from "../../../actions/recipes";
 
 
@@ -49,7 +49,10 @@ const ProfilePage = ({user, recipes, savedRecipes, myRatings, setCurrentProfileF
                 <div css={buttons}>
                     {editingProfile && <Button type="button" variant="contained" onClick={handleSaveChanges}>Save Changes</Button>}
                     {error && <Alert severity="error">{error}</Alert>}
-                    <Button variant="contained" onClick={()=>setEditingProfile(editingProfile===true ? false : true)}>{editingProfile ? "Cancel" : "Edit Profile"}</Button>
+                    <Button variant="contained" onClick={()=>{
+                        if(editingProfile) dispatch(clearUserError())
+                        setEditingProfile(editingProfile===true ? false : true)
+                    }}>{editingProfile ? "Cancel" : "Edit Profile"}</Button>
                 </div>
             </div>
             <div css={profileInfo}>

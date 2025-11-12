@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import {Paper, Typography, TextField, Button, Alert} from '@mui/material'
 import { buttonSubmit, form, paper, root } from './styles'
 import { useDispatch, useSelector } from "react-redux";
-import {postRegister} from "../../actions/user"
+import {clearUserError, postRegister} from "../../actions/user"
 
 const Register = () => {
     const {error} = useSelector((state) => state.user)
@@ -34,6 +34,7 @@ const Register = () => {
     const [formKey, setFormKey] = useState(0);
 
     const clear = () => {
+        dispatch(clearUserError())
         setUsername('');
         setEmail('');
         setPwd('');

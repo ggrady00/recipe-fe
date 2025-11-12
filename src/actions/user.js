@@ -50,3 +50,7 @@ export const patchProfile = (profile) => async(dispatch) => {
         return false;
     })
 }
+
+export const clearUserError = () => async(dispatch) => {
+    dispatch({type: "CLEAR_USER_ERROR"})
+}

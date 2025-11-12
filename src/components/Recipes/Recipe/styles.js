@@ -79,3 +79,8 @@ export const fullscreenCardActions = css`
   justify-content: flex-start;
   gap: 16px;
 `;
+
+export const ingredientList = css`
+  display: flex;
+  justify-content: flex-start;
+`

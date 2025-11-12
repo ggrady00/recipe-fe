@@ -42,6 +42,11 @@ const Profile = ({loggedInUser,setFilterRecipesByUser, setShowSavedRecipes, setC
         setCurrentForm("profile")
     }
 
+    const handleShoppingList = () => {
+        handleClose()
+        setCurrentForm("shoppingList")
+    }
+
     return (
         
         <div>
@@ -64,6 +69,7 @@ const Profile = ({loggedInUser,setFilterRecipesByUser, setShowSavedRecipes, setC
                 <MenuItem onClick={handleShowProfile}>Profile</MenuItem>
                 <MenuItem onClick={handleMyRecipes}>My Recipes</MenuItem>
                 <MenuItem onClick={handleSavedRecipes}>Saved Recipes</MenuItem>
+                <MenuItem onClick={handleShoppingList}>Shopping List</MenuItem>
                 <MenuItem onClick={handleClose}>Settings</MenuItem>
                 <MenuItem onClick={handleLogout}>Log out</MenuItem>
             </Menu>

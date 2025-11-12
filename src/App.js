@@ -18,6 +18,7 @@ import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar, 
 import Filter from "./components/Filter/Filter";
 import UserProfile from "./components/User Profile/UserProfile";
 import { getComments } from "./actions/comments";
+import ShoppingList from "./components/Shopping List/ShoppingList";
 
 const App = () => {
     const [currentId, setCurrentId] = useState(null)
@@ -93,14 +94,14 @@ const App = () => {
             </Toolbar>
         </AppBar>
         
-        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile") && <Filter setFilteringRecipes={setFilteringRecipes} filteringRecipes={filteringRecipes} setFilterIngredients={setFilterIngredients} filterIngredients={filterIngredients} setFilterTags={setFilterTags} filterTags={filterTags}></Filter>}
+        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile" && currentForm !== "shoppingList") && <Filter setFilteringRecipes={setFilteringRecipes} filteringRecipes={filteringRecipes} setFilterIngredients={setFilterIngredients} filterIngredients={filterIngredients} setFilterTags={setFilterTags} filterTags={filterTags}></Filter>}
 
         
         <Grow in>
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={currentForm ? 8 : 12}>
-                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes} previousForm={previousForm} setPreviousForm={setPreviousForm}/>}
+                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile" && currentForm !== "shoppingList") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes} previousForm={previousForm} setPreviousForm={setPreviousForm}/>}
                         {(currentForm === 'upload' || currentForm === "edit") && <Form currentForm={currentForm} currentId={currentId} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId}/>}
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -109,6 +110,7 @@ const App = () => {
                     </Grid>
                 </Grid>
                 {(currentForm === "profile" && <UserProfile user={user} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId} setPreviousForm={setPreviousForm} previousProfileForm={previousProfileForm} setPreviousProfileForm={setPreviousProfileForm}/>)}
+                {(currentForm === "shoppingList" && <ShoppingList />)}            
             </Container>
         </Grow>
     </Container>

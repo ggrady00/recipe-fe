@@ -23,6 +23,7 @@ import {
   fullscreenMedia,
   fullscreenCard,
   fullscreenCardActions,
+  ingredientList,
 } from "./styles";
 import moment from "moment";
 import { useDispatch } from "react-redux";
@@ -70,12 +71,13 @@ const Recipe = ({
   }
 
 
+
   return (
 
 
-    <Card css={currentId == recipe.id ? fullscreenCard : card}>
+    <Card css={currentId === recipe.id ? fullscreenCard : card}>
       <CardMedia
-        css={currentId == recipe.id ? fullscreenMedia : media}
+        css={currentId === recipe.id ? fullscreenMedia : media}
         image={placeholder}
         title={recipe.name}
       />
@@ -127,12 +129,20 @@ const Recipe = ({
         <Typography variant="body2" color="textSecondary" component="p">
           {recipe.description}
         </Typography>
-        {recipe.id == currentId ? (
+        {recipe.id === currentId ? (
           <div>
             <br></br>
+            <Typography variant="h5">Ingredients:</Typography>
+            {recipe.ingredients.map((ingredient, index) => (
+              <div css={ingredientList}>
+                <Typography variant="h6" style={{width: "150px"}}>{ingredient.quantity}</Typography>
+                <Typography variant="h6">{ingredient.ingredient}</Typography>
+              </div>
+            ))}
+            <br></br>
             <Typography variant="h5">Instructions:</Typography>
-            {recipe.instructions.split("\n").map((line) => {
-              return <Typography variant="h6">{line}</Typography>;
+            {recipe.instructions.split("\n").map((line, index) => {
+              return <Typography key={index} variant="h6">{line}</Typography>;
             })}
           </div>
         ) : null}
@@ -140,11 +150,11 @@ const Recipe = ({
 
 
       <CardActions
-        css={currentId == recipe.id ? fullscreenCardActions : cardActions}
+        css={currentId === recipe.id ? fullscreenCardActions : cardActions}
       >
         <Ratings recipe={recipe} user={user}></Ratings>
         <Button onClick={handleSaveButton}>{savedRecipes?.some(saved => saved.recipe_id === recipe.id) ? "Unsave" : "Save"}</Button>
-        {currentId == null ? (
+        {currentId === null ? (
           <Button
             color="primary"
             size="small"

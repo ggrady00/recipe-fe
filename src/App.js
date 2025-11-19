@@ -18,6 +18,7 @@ import { appBar, heading, image, mainContainer, button, toolbar, centerToolbar, 
 import Filter from "./components/Filter/Filter";
 import UserProfile from "./components/User Profile/UserProfile";
 import { getComments } from "./actions/comments";
+import {getShoppingList} from "./actions/shopping-list"
 import ShoppingList from "./components/Shopping List/ShoppingList";
 
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
             setCurrentForm("")
             setLoggedIn(true)
             dispatch(getSavedRecipes())
+            dispatch(getShoppingList())
         }
 
         if (prevUser?.username && !user?.username) {

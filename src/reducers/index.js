@@ -7,6 +7,7 @@ import tags from "./tags"
 import comments from "./comments"
 import savedRecipes from "./saved-recipes"
 import allComments from "./all-comments"
+import shoppingList from "./shopping-list"
 
 
-export const reducers = combineReducers({ recipes, ratings, user, ingredients, tags, comments, savedRecipes, allComments });
+export const reducers = combineReducers({ recipes, ratings, user, ingredients, tags, comments, savedRecipes, allComments, shoppingList });

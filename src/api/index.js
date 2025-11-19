@@ -25,3 +25,7 @@ export const postSavedRecipes = (recipeId) => axios.post(`${url}/api/saved-recip
 export const deleteSavedRecipes = (recipeId) => axios.delete(`${url}/api/saved-recipes`, {data : recipeId})
 export const patchProfile = (profile) => axios.patch(`${url}/api/auth/profile`, profile)
 export const fetchComments = () => axios.get(`${url}/api/comments`)
+export const fetchShoppingList = () => axios.get(`${url}/api/shopping-list`)
+export const postShoppingList = (ings) => axios.post(`${url}/api/shopping-list`, ings)
+export const deleteShoppingListItem = (id) => axios.delete(`${url}/api/shopping-list/${id}`)
+export const patchShoppingListItems = (id, quantity) => axios.patch(`${url}/api/shopping-list/${id}`, quantity)

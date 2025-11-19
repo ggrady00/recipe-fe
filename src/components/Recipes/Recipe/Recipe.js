@@ -26,13 +26,14 @@ import {
   ingredientList,
 } from "./styles";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import { deleteRecipe } from "../../../actions/recipes";
 import placeholder from "../../../images/food.jpg";
 import Comments from "./Comments/Comments"
 import Ratings from "./Ratings/Ratings";
 import { deleteSavedRecipes, postSavedRecipes } from "../../../actions/saved-recipes";
+import { postShoppingList } from "../../../actions/shopping-list";
 
 const Recipe = ({
   recipe,
@@ -44,6 +45,8 @@ const Recipe = ({
   savedRecipes,
 }) => {
   const dispatch = useDispatch();
+  const allIngredients = useSelector(state => state.ingredients)
+  // console.log(allIngredients)
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -68,6 +71,17 @@ const Recipe = ({
 
   const handleSaveButton = () => {
     savedRecipes?.some(saved => saved.recipe_id === recipe.id) ? dispatch(deleteSavedRecipes({"recipe_id" : recipe.id})) : dispatch(postSavedRecipes({"recipe_id" : recipe.id}))
+  }
+
+  const handleAddToShoppingList = () => {
+    const formattedIngs = recipe.ingredients.map(ingredient => {
+      const found = allIngredients.find(allIng => ingredient.ingredient === allIng.name)
+      return {
+        quantity: ingredient.quantity,
+        ingredient_id: found.id
+      }
+    })
+    dispatch(postShoppingList(formattedIngs))
   }
 
 
@@ -132,7 +146,10 @@ const Recipe = ({
         {recipe.id === currentId ? (
           <div>
             <br></br>
-            <Typography variant="h5">Ingredients:</Typography>
+            <div style={{display: "flex"}}>
+              <Typography variant="h5">Ingredients:</Typography>
+              <Button onClick={handleAddToShoppingList}>Add to Shopping List</Button>
+            </div>
             {recipe.ingredients.map((ingredient, index) => (
               <div css={ingredientList}>
                 <Typography variant="h6" style={{width: "150px"}}>{ingredient.quantity}</Typography>

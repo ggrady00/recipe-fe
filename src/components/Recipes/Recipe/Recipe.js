@@ -46,7 +46,6 @@ const Recipe = ({
 }) => {
   const dispatch = useDispatch();
   const allIngredients = useSelector(state => state.ingredients)
-  // console.log(allIngredients)
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -57,7 +56,6 @@ const Recipe = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const handleDelete = () => {
     handleClose();
     dispatch(deleteRecipe(recipe.id));
@@ -92,7 +90,7 @@ const Recipe = ({
     <Card css={currentId === recipe.id ? fullscreenCard : card}>
       <CardMedia
         css={currentId === recipe.id ? fullscreenMedia : media}
-        image={placeholder}
+        image={recipe.recipe_pic || placeholder}
         title={recipe.name}
       />
       <div css={overlay}>

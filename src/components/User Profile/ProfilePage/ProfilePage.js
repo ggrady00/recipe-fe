@@ -2,7 +2,7 @@
 import { Avatar, IconButton, Paper, Typography, Button, TextField, Divider, Alert } from "@mui/material";
 import { avatar, avatarIcon, buttons, editButton, paper, profile, profileInfo, topBar } from "./styles";
 import EditIcon from '@mui/icons-material/Edit';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserError, patchProfile } from "../../../actions/user";
 import { getRecipes } from "../../../actions/recipes";
@@ -31,6 +31,17 @@ const ProfilePage = ({user, recipes, savedRecipes, myRatings, setCurrentProfileF
         }
         
     }
+
+    const fileInputRef = useRef(null);
+
+    const handleOpenFilePicker = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        const success = await dispatch(patchProfile({profile_pic: file}))
+    }
     
 
     return (
@@ -39,8 +50,9 @@ const ProfilePage = ({user, recipes, savedRecipes, myRatings, setCurrentProfileF
                 <div css={profile}>
                     <div css={avatarIcon}>
                         <Avatar src={user.profile_pic} css={avatar} />
-                        {editingProfile && <IconButton css={editButton}> 
+                        {editingProfile && <IconButton  css={editButton} onClick={handleOpenFilePicker}> 
                             <EditIcon /> {/*Add profile pic */}
+                            <input  type="file" style={{ display: "none" }} accept="image/" onChange={handleImageUpload} ref={fileInputRef} />
                         </IconButton>}
                     </div>
                     {!editingProfile && <Typography>{user.username}</Typography>}

@@ -37,7 +37,12 @@ export const logout = () => async (dispatch) => {
 }
 
 export const patchProfile = (profile) => async(dispatch) => {
-    return api.patchProfile(profile)
+    const formData = new FormData();
+
+    if (profile.username) formData.append("username", profile.username);
+    if (profile.profile_info) formData.append("profile_info", profile.profile_info);
+    if (profile.profile_pic) formData.append("profile_pic", profile.profile_pic);
+    return api.patchProfile(formData)
     .then(()=>{
         return api.fetchProfile()
     })

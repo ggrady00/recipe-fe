@@ -73,8 +73,6 @@ const App = () => {
         setShowSavedRecipes(false)
     }
 
-    
-
     return (
     <Container maxWidth="lg">
         <AppBar css={appBar} position="static" color="inherit">

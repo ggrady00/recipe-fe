@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Autocomplete, Box, Button, IconButton, Paper, TextField, Typography } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { buttonSubmit, fileInput, form, ingredientList, paper, root } from './styles'
-import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { postRecipe } from '../../actions/recipes'
 import { postIngredients } from '../../actions/ingredients';
@@ -122,7 +121,16 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
         setPostData({name: '', description: '', instructions: '', ingredients: [], tags: []})
     }
 
-    
+    const fileInputRef = useRef(null);
+
+    const handleOpenFilePicker = () => {
+        fileInputRef.current.click();
+    };
+
+    const handleImageUpload = async (e) => {
+        const file = e.target.files[0];
+        setPostData({...postData, recipe_pic: file})
+    }
 
     return (
         <Paper css={paper}>
@@ -201,9 +209,10 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
                     <Button variant='contained' onClick={handleAddNewTag}>Submit</Button>
                 </div>}
                 {/* <TextField name="tags" variant='outlined' label="Tags" fullWidth value={postData.tags} onChange={(e) => setPostData({...postData, tags: e.target.value})} /> */}
-                {/* <div css={fileInput}>
-                    <FileBase type='file' multiple={false} onDone={({base64}) => setPostData({...postData, selectedFile: base64})} />
-                </div> */}
+                <Button onClick={handleOpenFilePicker}>
+                    Upload Photo
+                    <input  type="file" style={{ display: "none" }} accept="image/" onChange={handleImageUpload} ref={fileInputRef} />
+                </Button>
                 <Button css={buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>Submit</Button>
                 <Button variant='contained' color='secondary' size='small' onClick={clear} fullWidth>Clear</Button>
             </form>

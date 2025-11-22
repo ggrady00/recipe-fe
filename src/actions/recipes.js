@@ -10,7 +10,14 @@ export const getRecipes = () => async(dispatch) => {
 }
 
 export const postRecipe = (recipe) => async(dispatch) => {
-    api.createRecipe(recipe)
+    const formData = new FormData();
+    if (recipe.name) formData.append("name", recipe.name);
+    if (recipe.description) formData.append("description", recipe.description);
+    if (recipe.instructions) formData.append("instructions", recipe.instructions);
+    if (recipe.ingredients) formData.append("ingredients", JSON.stringify(recipe.ingredients));
+    if (recipe.tags) formData.append("tags", JSON.stringify(recipe.tags));
+    if (recipe.recipe_pic) formData.append("recipe_pic", recipe.recipe_pic);
+    api.createRecipe(formData)
     .then(() => {
         return api.fetchRecipes()
     })

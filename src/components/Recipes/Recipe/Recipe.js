@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
 import {
   Card,
   CardActions,
@@ -43,6 +43,8 @@ const Recipe = ({
   setCurrentForm,
   user,
   savedRecipes,
+  highlightMyComment,
+  setHighlightMyComment
 }) => {
   const dispatch = useDispatch();
   const allIngredients = useSelector(state => state.ingredients)
@@ -149,7 +151,7 @@ const Recipe = ({
               <Button onClick={handleAddToShoppingList}>Add to Shopping List</Button>
             </div>
             {recipe.ingredients.map((ingredient, index) => (
-              <div css={ingredientList}>
+              <div css={ingredientList} key={index}>
                 <Typography variant="h6" style={{width: "150px"}}>{ingredient.quantity}</Typography>
                 <Typography variant="h6">{ingredient.ingredient}</Typography>
               </div>
@@ -180,7 +182,7 @@ const Recipe = ({
         ) : null}
       </CardActions>
 
-      {currentId && <Comments user={user} recipe={recipe}></Comments>}
+      {currentId && <Comments user={user} recipe={recipe} highlightMyComment={highlightMyComment}></Comments>}
 
     </Card>
   );

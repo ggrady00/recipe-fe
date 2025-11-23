@@ -5,17 +5,32 @@ import { MoreVert } from "@mui/icons-material";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCommentById, postCommentsById } from "../../../../actions/comments";
-import { allComments, commentSection, eachComment } from "./styles";
+import { allComments, commentSection, eachComment, highlightedComment } from "./styles";
 
-const Comments = ({user, recipe}) => {
+const Comments = ({user, recipe, highlightMyComment}) => {
   const dispatch = useDispatch();
   const comments = useSelector((state) => state.comments);
   const [newComment, setNewComment] = useState("");
   const [addingComment, setAddingComment] = useState(null);
   const [showCommentError, setShowCommentError] = useState(null);
   const commentSectionRef = useRef(null);
-  comments.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
-
+  const highlightCommentRef = useRef({});
+  const sortedComments = React.useMemo(() => {
+    const copy = [...comments];
+  
+    copy.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    
+    if (highlightMyComment) {
+      copy.sort((a, b) => {
+        if (a.id === highlightMyComment) return -1;
+        if (b.id === highlightMyComment) return 1;
+        return 0;
+      });
+    }
+  
+    return copy;
+  }, [comments, highlightMyComment]);
+  
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedComment, setSelectedComment] = useState(null);
@@ -56,6 +71,23 @@ const Comments = ({user, recipe}) => {
     }
   },[showCommentError])
 
+
+  useEffect(() => {
+    if (highlightMyComment && highlightCommentRef.current[highlightMyComment]) {
+  
+      requestAnimationFrame(() => {
+        const el = highlightCommentRef.current[highlightMyComment];
+        if (!el) return;
+  
+        el.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
+    }
+  }, [highlightMyComment, sortedComments]);
+  
+
   const handleCommentFieldClick = () => {
     setAddingComment(true);
   };
@@ -91,8 +123,10 @@ const Comments = ({user, recipe}) => {
               </div>
             )}
           </div>
-          {comments.map((comment) => (
-            <div key={comment.id} css={allComments}>
+          {sortedComments.map((comment) => (
+            <div key={comment.id} css={[allComments, highlightMyComment === comment.id && highlightedComment]} ref={(el) => {
+              if (el) highlightCommentRef.current[comment.id] = el;
+            }}>
               <div>
                 <div css={eachComment}>
                   <Typography variant="subtitle1" fontWeight="bold">

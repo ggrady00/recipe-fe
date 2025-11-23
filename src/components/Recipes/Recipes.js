@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {useDispatch, useSelector} from "react-redux"
 import Recipe from './Recipe/Recipe'
 import { Grid2, CircularProgress, Dialog } from "@mui/material";
@@ -8,14 +8,14 @@ import {Button} from "@mui/material";
 import { getCommentsById } from "../../actions/comments";
 
 
-const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags, showSavedRecipes, previousForm, setPreviousForm}) => {
+const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags, showSavedRecipes, previousForm, setPreviousForm, highlightMyComment, setHighlightMyComment}) => {
     const dispatch = useDispatch()
     
     useEffect(()=>{
         if(currentId) {
             dispatch(getCommentsById(currentId))
         }
-      },[currentId])
+      },[currentId, dispatch])
 
 
     const recipes = useSelector((state)=>state.recipes)
@@ -55,6 +55,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
                 <Button
                         onClick={() => {
                             setCurrentId(null)
+                            setHighlightMyComment(null)
                             if(previousForm) {
                                 setCurrentForm(previousForm)
                                 setPreviousForm("")
@@ -65,7 +66,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
                     >
                         Close
                     </Button>
-                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} user={user} savedRecipes={savedRecipes}/>
+                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} user={user} savedRecipes={savedRecipes} highlightMyComment={highlightMyComment}/>
             </Dialog>
             
         )

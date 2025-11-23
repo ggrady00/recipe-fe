@@ -16,3 +16,11 @@ export const eachComment = css`
 export const commentSection = css`
   padding-bottom: 20px;
 `
+
+export const highlightedComment = css`
+  background-color: #fff3cd; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+`

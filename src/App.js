@@ -35,6 +35,8 @@ const App = () => {
     const [filterTags, setFilterTags] = useState([])
     const [showSavedRecipes, setShowSavedRecipes] = useState(null)
     const prevUserRef = useRef(null)
+    const [highlightMyComment, setHighlightMyComment] = useState(null)
+    const [currentProfileForm, setCurrentProfileForm] = useState("profilePage")
 
     useEffect(()=>{
         dispatch(getRecipes())
@@ -62,7 +64,7 @@ const App = () => {
         }
 
         prevUserRef.current = user;
-    },[user])
+    },[user, dispatch])
 
 
     const handleHome = () => {
@@ -88,7 +90,7 @@ const App = () => {
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "register" ? "" : "register"))}>Register</Button>}
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "login" ? "" : "login"))}>Login</Button>}
                     {loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "upload" ? "" : "upload"))}>Upload</Button>} 
-                    {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser} setShowSavedRecipes={setShowSavedRecipes} setCurrentForm={setCurrentForm}/>} 
+                    {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser} setShowSavedRecipes={setShowSavedRecipes} setCurrentForm={setCurrentForm} setCurrentProfileForm={setCurrentProfileForm}/>} 
                     {/* add profile functionality */}
                 </div>
             </Toolbar>
@@ -101,7 +103,7 @@ const App = () => {
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={currentForm ? 8 : 12}>
-                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile" && currentForm !== "shoppingList") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes} previousForm={previousForm} setPreviousForm={setPreviousForm}/>}
+                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile" && currentForm !== "shoppingList") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes} previousForm={previousForm} setPreviousForm={setPreviousForm} highlightMyComment={highlightMyComment} setHighlightMyComment={setHighlightMyComment}/>}
                         {(currentForm === 'upload' || currentForm === "edit") && <Form currentForm={currentForm} currentId={currentId} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId}/>}
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -109,7 +111,7 @@ const App = () => {
                         {currentForm === 'register' && <Register />}
                     </Grid>
                 </Grid>
-                {(currentForm === "profile" && <UserProfile user={user} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId} setPreviousForm={setPreviousForm} previousProfileForm={previousProfileForm} setPreviousProfileForm={setPreviousProfileForm}/>)}
+                {(currentForm === "profile" && <UserProfile user={user} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId} setPreviousForm={setPreviousForm} previousProfileForm={previousProfileForm} setPreviousProfileForm={setPreviousProfileForm} setHighlightMyComment={setHighlightMyComment} currentProfileForm={currentProfileForm} setCurrentProfileForm={setCurrentProfileForm}/>)}
                 {(currentForm === "shoppingList" && <ShoppingList />)}            
             </Container>
         </Grow>

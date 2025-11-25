@@ -27,8 +27,6 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
     const [patchId, setPatchId] = useState(null)
     const [editingRecipe, setEditingRecipe] = useState(null)
     
-    console.log(currentForm, currentId)
-
     useEffect(()=>{
         if(currentId) {
             const recipe = recipes.filter(recipe => recipe.id === currentId)[0]
@@ -213,13 +211,13 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
                     <Button variant='contained' onClick={handleAddNewTag}>Submit</Button>
                 </div>}
                 {/* <TextField name="tags" variant='outlined' label="Tags" fullWidth value={postData.tags} onChange={(e) => setPostData({...postData, tags: e.target.value})} /> */}
-                <div style={{display:"flex", flexDirection:"row", justifyContent: "space-between"}}>
+                {currentForm === "upload" && <div style={{display:"flex", flexDirection:"row", justifyContent: "space-between"}}>
                     <Button onClick={handleOpenFilePicker}>
                         Upload Photo
                         <input  type="file" style={{ display: "none" }} accept="image/" onChange={handleImageUpload} ref={fileInputRef} />
                     </Button>
-                    {editingRecipe && <img  src={editingRecipe.recipe_pic} style={{width: "250px", height: "250px"}} alt={editingRecipe.name}/>}
-                </div>
+                    {/* {editingRecipe && <img  src={editingRecipe.recipe_pic} style={{width: "250px", height: "250px"}} alt={editingRecipe.name}/>} */}
+                </div>}
                 <Button css={buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>Submit</Button>
                 <Button variant='contained' color='secondary' size='small' onClick={clear} fullWidth>Clear</Button>
             </form>

@@ -44,7 +44,7 @@ const Recipe = ({
   user,
   savedRecipes,
   highlightMyComment,
-  setHighlightMyComment
+  loggedIn
 }) => {
   const dispatch = useDispatch();
   const allIngredients = useSelector(state => state.ingredients)
@@ -83,8 +83,6 @@ const Recipe = ({
     })
     dispatch(postShoppingList(formattedIngs))
   }
-
-
 
   return (
 
@@ -148,7 +146,7 @@ const Recipe = ({
             <br></br>
             <div style={{display: "flex"}}>
               <Typography variant="h5">Ingredients:</Typography>
-              <Button onClick={handleAddToShoppingList}>Add to Shopping List</Button>
+              {loggedIn && <Button onClick={handleAddToShoppingList}>Add to Shopping List</Button>}
             </div>
             {recipe.ingredients.map((ingredient, index) => (
               <div css={ingredientList} key={index}>

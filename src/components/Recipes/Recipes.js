@@ -8,7 +8,7 @@ import {Button} from "@mui/material";
 import { getCommentsById } from "../../actions/comments";
 
 
-const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags, showSavedRecipes, previousForm, setPreviousForm, highlightMyComment, setHighlightMyComment}) => {
+const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, filterIngredients, filterTags, showSavedRecipes, previousForm, setPreviousForm, highlightMyComment, setHighlightMyComment, loggedIn}) => {
     const dispatch = useDispatch()
     
     useEffect(()=>{
@@ -66,7 +66,7 @@ const Recipes = ({setCurrentId, currentId, filterRecipesByUser, setCurrentForm, 
                     >
                         Close
                     </Button>
-                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} user={user} savedRecipes={savedRecipes} highlightMyComment={highlightMyComment}/>
+                <Recipe recipe={recipe} setCurrentId={setCurrentId} currentId={currentId} showDelete={showDelete} user={user} savedRecipes={savedRecipes} highlightMyComment={highlightMyComment} loggedIn={loggedIn}/>
             </Dialog>
             
         )

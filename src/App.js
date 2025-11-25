@@ -89,9 +89,11 @@ const App = () => {
                 <div css={rightToolbar}>
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "register" ? "" : "register"))}>Register</Button>}
                     {!loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "login" ? "" : "login"))}>Login</Button>}
-                    {loggedIn && <Button css={button} variant="contained" onClick={()=>setCurrentForm(prevForm => (prevForm === "upload" ? "" : "upload"))}>Upload</Button>} 
+                    {loggedIn && <Button css={button} variant="contained" onClick={()=>{
+                        setCurrentForm(prevForm => (prevForm === "upload" || prevForm === "edit" ? "" : "upload"))
+                        if(currentForm === "edit") setCurrentId(null)
+                        }}>Upload</Button>} 
                     {loggedIn && <Profile loggedInUser={user} setFilterRecipesByUser={setFilterRecipesByUser} setShowSavedRecipes={setShowSavedRecipes} setCurrentForm={setCurrentForm} setCurrentProfileForm={setCurrentProfileForm}/>} 
-                    {/* add profile functionality */}
                 </div>
             </Toolbar>
         </AppBar>
@@ -103,7 +105,7 @@ const App = () => {
             <Container>
                 <Grid container css={mainContainer} justifyContent="space-between" alignItems="stretch" spacing={3}>
                     <Grid item xs={12} sm={currentForm ? 8 : 12}>
-                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile" && currentForm !== "shoppingList") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes} previousForm={previousForm} setPreviousForm={setPreviousForm} highlightMyComment={highlightMyComment} setHighlightMyComment={setHighlightMyComment}/>}
+                        {(currentForm !== "upload" && currentForm !== "edit" && currentForm !== "profile" && currentForm !== "shoppingList") && <Recipes setCurrentId={setCurrentId} currentId={currentId} filterRecipesByUser={filterRecipesByUser} setCurrentForm={setCurrentForm} filterIngredients={filterIngredients} filterTags={filterTags} showSavedRecipes={showSavedRecipes} previousForm={previousForm} setPreviousForm={setPreviousForm} highlightMyComment={highlightMyComment} setHighlightMyComment={setHighlightMyComment} loggedIn={loggedIn}/>}
                         {(currentForm === 'upload' || currentForm === "edit") && <Form currentForm={currentForm} currentId={currentId} setCurrentForm={setCurrentForm} setCurrentId={setCurrentId}/>}
                     </Grid>
                     <Grid item xs={12} sm={4}>

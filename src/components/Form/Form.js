@@ -4,7 +4,7 @@ import { Autocomplete, Box, Button, IconButton, Paper, TextField, Typography } f
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { buttonSubmit, fileInput, form, ingredientList, paper, root } from './styles'
+import { buttonSubmit, form, ingredientList, paper, root } from './styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { postRecipe } from '../../actions/recipes'
 import { postIngredients } from '../../actions/ingredients';
@@ -25,10 +25,14 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
     const [newTag, setNewTag] = useState("")
     const recipes = useSelector((state) => state.recipes)
     const [patchId, setPatchId] = useState(null)
+    const [editingRecipe, setEditingRecipe] = useState(null)
     
+    console.log(currentForm, currentId)
+
     useEffect(()=>{
         if(currentId) {
-            const recipe = recipes.filter(recipe => recipe.id == currentId)[0]
+            const recipe = recipes.filter(recipe => recipe.id === currentId)[0]
+            setEditingRecipe(recipe)
             if(recipe) {
                 const formatIngredients = recipe.ingredients.map(ing => {
                     const newObj = {
@@ -135,7 +139,7 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
     return (
         <Paper css={paper}>
             <form autoComplete='off' noValidate css={`${root} ${form}`} onSubmit={handleSubmit}>
-                <Typography variant='h4'>Upload a recipe</Typography>
+                <Typography variant='h4'>{editingRecipe ? "Editing ..." : "Upload A Recipe"}</Typography>
                 <TextField name="name" variant='outlined' label="Name" fullWidth value={postData.name} onChange={(e) => setPostData({...postData, name: e.target.value})} />
                 <TextField name="description" variant='outlined' label="Description" fullWidth multiline minRows={2} maxRows={3} value={postData.description} onChange={(e) => setPostData({...postData, description: e.target.value})} />
                 <TextField name="instructions" variant='outlined' label="Instructions" fullWidth multiline minRows={6} maxRows={10} value={postData.instructions} onChange={(e) => setPostData({...postData, instructions: e.target.value})} />
@@ -158,7 +162,7 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
                 renderInput={(params)=>(
                     <TextField {...params} variant='outlined' label="Search Ingredients" fullWidth />)}
                 />
-                    <Button onClick={()=>setUploadIng(uploadIng==true ? false: true)}>
+                    <Button onClick={()=>setUploadIng(uploadIng===true ? false: true)}>
                         {uploadIng ? "Cancel" : "Add Ingredient" }
                     </Button>
                 </div>}
@@ -201,7 +205,7 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
                     <TextField {...params} variant='outlined' label="Search Tags" fullWidth />
                 )}
                 />
-                <Button onClick={()=>setUploadTag( uploadTag== true ? false : true)}>{uploadTag ? "Cancel" : "New Tag"}</Button>
+                <Button onClick={()=>setUploadTag( uploadTag=== true ? false : true)}>{uploadTag ? "Cancel" : "New Tag"}</Button>
                 </div>
                 {uploadTag && 
                 <div css={form}>
@@ -209,10 +213,13 @@ const Form = ({currentForm, currentId, setCurrentId, setCurrentForm}) => {
                     <Button variant='contained' onClick={handleAddNewTag}>Submit</Button>
                 </div>}
                 {/* <TextField name="tags" variant='outlined' label="Tags" fullWidth value={postData.tags} onChange={(e) => setPostData({...postData, tags: e.target.value})} /> */}
-                <Button onClick={handleOpenFilePicker}>
-                    Upload Photo
-                    <input  type="file" style={{ display: "none" }} accept="image/" onChange={handleImageUpload} ref={fileInputRef} />
-                </Button>
+                <div style={{display:"flex", flexDirection:"row", justifyContent: "space-between"}}>
+                    <Button onClick={handleOpenFilePicker}>
+                        Upload Photo
+                        <input  type="file" style={{ display: "none" }} accept="image/" onChange={handleImageUpload} ref={fileInputRef} />
+                    </Button>
+                    {editingRecipe && <img  src={editingRecipe.recipe_pic} style={{width: "250px", height: "250px"}} alt={editingRecipe.name}/>}
+                </div>
                 <Button css={buttonSubmit} variant='contained' color='primary' size='large' type='submit' fullWidth>Submit</Button>
                 <Button variant='contained' color='secondary' size='small' onClick={clear} fullWidth>Clear</Button>
             </form>
